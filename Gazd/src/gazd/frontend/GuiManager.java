@@ -14,11 +14,13 @@ import javax.swing.JFrame;
  */
 public final class GuiManager {
     
+    private static StartScreen screen;
+    
     private GuiManager(){
     }
 
     public static void start() {
-        JFrame screen = new StartScreen();
+        screen = new StartScreen();
         screen.pack();
         screen.setVisible(true);
     }

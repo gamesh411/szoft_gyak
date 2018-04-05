@@ -21,7 +21,7 @@ public class MainPanel extends JPanel {
 
     private void initPanel() {
         setBackground(Color.red);
-        setPreferredSize(new Dimension(2200, 1600));
+        setPreferredSize(new Dimension(1100, 800));
         
         ControlPanel buttonPanel = new ControlPanel();       
         BoardPane layeredPane = new BoardPane();

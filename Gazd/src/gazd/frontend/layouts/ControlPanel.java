@@ -28,7 +28,7 @@ public class ControlPanel extends JPanel{
     
     private void init(){
         setLayout(new FlowLayout());
-        setPreferredSize(new Dimension(2200, 200));
+        setPreferredSize(new Dimension(1100, 100));
         initLabels();
         initButtons();
     }

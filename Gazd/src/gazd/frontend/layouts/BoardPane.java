@@ -25,20 +25,20 @@ public class BoardPane extends JLayeredPane{
     }
     
     private void init(){
-        setPreferredSize(new Dimension(2200, 1400));
+        setPreferredSize(new Dimension(1100, 700));
         setLayout(new FlowLayout());
         setBackgroundImage();
     }
 
     private void setBackgroundImage() {
         board = new JLabel(loadBackgroundImage());
-        board.setPreferredSize(new Dimension(2200, 1400));
+        board.setPreferredSize(new Dimension(1100, 700));
         add(board, new Integer(0));
     }
 
     private ImageIcon loadBackgroundImage() {
-        Image img = new ImageIcon("board.jpg").getImage();
-        Image newimg = img.getScaledInstance(2200, 1400, java.awt.Image.SCALE_SMOOTH);
+        Image img = new ImageIcon("img/board.jpg").getImage();
+        Image newimg = img.getScaledInstance(1100, 700, java.awt.Image.SCALE_SMOOTH);
         return new ImageIcon(newimg);
     }
     
