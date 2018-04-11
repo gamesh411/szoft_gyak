@@ -10,6 +10,6 @@ package gazd.backend;
  * @author mmeta
  */
 public enum Piece {
-    RED,GREEN,BLUE,YELLOW,BLACK
+    RED,GREEN,BLUE,YELLOW,PURPLE
     
 }

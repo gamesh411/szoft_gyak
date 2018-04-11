@@ -14,6 +14,10 @@ import javax.swing.JFrame;
  * @author Dell
  */
 public class StartScreen extends JFrame {
+    
+    MainPanel main;
+    Menu menu;
+    
 
     public StartScreen() {
         initStartScreen();          
@@ -21,8 +25,10 @@ public class StartScreen extends JFrame {
 
     private void initStartScreen() {
         this.setLayout(new FlowLayout());
-        add(new MainPanel());
-        setJMenuBar(new Menu());
+        main = new MainPanel();
+        add(main);
+        menu = new Menu();
+        setJMenuBar(menu);
         setTitle("Gazdálkodj okosan");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
