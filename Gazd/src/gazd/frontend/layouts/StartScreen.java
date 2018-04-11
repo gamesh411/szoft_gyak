@@ -17,7 +17,6 @@ public class StartScreen extends JFrame {
     
     MainPanel main;
     Menu menu;
-    
 
     public StartScreen() {
         initStartScreen();          
