@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd;
-
-import gazd.frontend.GuiManager;
+package gazd.backend;
 
 /**
  *
- * @author <Andó Sándor Zsolt>
+ * @author endrefulop
  */
-public class GazdApp {
-
-    public static void main(String[] args){
-        (new GuiManager()).start();
-    }
-    
+public interface IField {
+    IGameAction onPlayerArrived(Player player);
 }

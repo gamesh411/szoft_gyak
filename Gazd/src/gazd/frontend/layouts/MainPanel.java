@@ -5,6 +5,7 @@
  */
 package gazd.frontend.layouts;
 
+import gazd.frontend.GuiManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JPanel;
@@ -15,7 +16,13 @@ import javax.swing.JPanel;
  */
 public class MainPanel extends JPanel {
 
-    public MainPanel(){
+    ControlPanel controlPanel;
+    BoardPanel boardPanel;
+
+    GuiManager gui;
+
+    public MainPanel(GuiManager gui){
+	this.gui = gui;
         initPanel();
     }
 
@@ -23,12 +30,19 @@ public class MainPanel extends JPanel {
         setBackground(Color.red);
         setPreferredSize(new Dimension(1100, 800));
         
-        ControlPanel buttonPanel = new ControlPanel();       
-        BoardPane layeredPane = new BoardPane();
+        controlPanel = new ControlPanel(gui);       
+        boardPanel = new BoardPanel(gui);
         
-        add(buttonPanel);
-        add(layeredPane);
+        add(controlPanel);
+        add(boardPanel);
 
     }
 
+    public ControlPanel getControlPanel() {
+	return controlPanel;
+    }
+
+    public BoardPanel getBoardPanel() {
+	return boardPanel;
+    }
 }

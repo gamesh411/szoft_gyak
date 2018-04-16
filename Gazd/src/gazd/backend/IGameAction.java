@@ -5,20 +5,10 @@
  */
 package gazd.backend;
 
-import java.util.LinkedList;
-
 /**
  *
- * @author mmeta
+ * @author endrefulop
  */
-public class Field {
-    
-   
-    public static LinkedList<Field> createFields(){
-        return new LinkedList<>();
-        
-    }
-    
-   
-    
+public interface IGameAction {
+    void execute();
 }

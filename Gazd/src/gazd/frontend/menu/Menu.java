@@ -20,7 +20,10 @@ public class Menu extends JMenuBar{
     private final JMenu menu = new JMenu();
     private final JMenuItem start = new JMenuItem();
 
-    public Menu() {
+    private GuiManager gui;
+
+    public Menu(GuiManager gui) {
+	this.gui = gui;
         initMenu();
     }
 
@@ -35,7 +38,7 @@ public class Menu extends JMenuBar{
     }
     
     private void start(ActionEvent e){
-        GuiManager.newGame();
+        gui.newGame();
     }
     
 }
