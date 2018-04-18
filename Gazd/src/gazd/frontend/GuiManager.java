@@ -42,5 +42,18 @@ public final class GuiManager {
     public List<Player> getPlayers() {
         return control == null ? new LinkedList<>() : control.getPlayers();
     }
+    
+    public Player getCurrentPlayer() {
+        return control == null ? null : control.getCurrentPlayer();
+    }
+
+    //TODO: Some consistent update implementation across the gui.
+    public void update() {
+        screen.update();
+    }
+
+    public void endRound() {
+        control.endRound();
+    }
 
 }

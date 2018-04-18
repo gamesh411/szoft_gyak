@@ -45,4 +45,8 @@ public class MainPanel extends JPanel {
     public BoardPanel getBoardPanel() {
 	return boardPanel;
     }
+
+    void update() {
+        controlPanel.update();
+    }
 }

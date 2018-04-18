@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
  *
@@ -28,7 +29,7 @@ public class Board {
 
     public Board() {
         players = new ArrayList<>();
-        fields = new ArrayList<>();
+        fields = fieldsFactory();
         actionQueue = new ArrayDeque<>();
     }
     
@@ -76,12 +77,21 @@ public class Board {
         int dice = rand.nextInt(6)+1;
         int newPosition = (currentPlayer.getPosition() + dice) % BOARDSIZE;
         currentPlayer.setPosition(newPosition);
+        queueImmediateAction(fields.get(newPosition).onPlayerArrived(currentPlayer));
         //TODO: get the tile the player landed on, and add its action to the action queue
     }
 
     public void nextPlayer() {
         currentPlayer = players.get( (players.indexOf(currentPlayer) + 1) % players.size() );
     }
+    
+    private List<IField> fieldsFactory(){
+        List<IField> field = new ArrayList<>();
+        IntStream.range(0, 48).forEach(i -> field.add(new StandardIField(this, 50)));
+        return field;
+    }
+    
+    
     
     
     

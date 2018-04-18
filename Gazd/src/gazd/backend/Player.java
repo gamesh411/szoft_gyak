@@ -44,6 +44,10 @@ public class Player {
         this.position = position;
     }
     
+    public void spendMoney(int cost){
+        money-=cost;
+    }
+    
     
     
     

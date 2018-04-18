@@ -36,4 +36,9 @@ public class StartScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    public void update() {
+       repaint();
+       main.update();
+    }
+
 }

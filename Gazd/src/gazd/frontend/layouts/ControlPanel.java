@@ -5,6 +5,7 @@
  */
 package gazd.frontend.layouts;
 
+import gazd.backend.Player;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -23,6 +24,7 @@ public class ControlPanel extends JPanel{
     private JLabel playerMoney;
     private JLabel playerPosition;
     private JButton diceRollerButton;
+    private JButton endRoundButton;
 
     private GuiManager gui;
 
@@ -39,9 +41,9 @@ public class ControlPanel extends JPanel{
     }
 
     private void initLabels() {
-        playerPiece = new JLabel("Jatekos szine");
-        playerMoney = new JLabel("Jatekos penze");
-        playerPosition = new JLabel("Jatekos helyzete");
+        playerPiece = new JLabel();
+        playerMoney = new JLabel();
+        playerPosition = new JLabel();
         add(playerPiece);
         add(playerMoney);
         add(playerPosition);
@@ -51,10 +53,23 @@ public class ControlPanel extends JPanel{
         diceRollerButton = new JButton("Dobás");
         diceRollerButton.addActionListener(this::doRoll);
         add(diceRollerButton);
+        diceRollerButton.setEnabled(false);
+        endRoundButton = new JButton("Kör vége");
+        endRoundButton.addActionListener(this::endRound);
+        endRoundButton.setEnabled(false);
+        add(endRoundButton);
     }
     
     private void doRoll(ActionEvent event){
         gui.doRoll();
+        diceRollerButton.setEnabled(false);
+        endRoundButton.setEnabled(true);
+    }
+    
+    private void endRound(ActionEvent event){
+        gui.endRound();
+        diceRollerButton.setEnabled(true);
+        endRoundButton.setEnabled(false);
     }
 
     public JLabel getCurrentPlayerPieceLabel() {
@@ -69,4 +84,11 @@ public class ControlPanel extends JPanel{
     	return playerPosition;
     }
     
+    public void update(){
+        diceRollerButton.setEnabled(!endRoundButton.isEnabled());
+        Player p = gui.getCurrentPlayer();
+        playerMoney.setText(""+p.getMoney());
+        playerPiece.setText(""+p.getPiece());
+        playerPosition.setText(""+p.getPosition());
+    }
 }
