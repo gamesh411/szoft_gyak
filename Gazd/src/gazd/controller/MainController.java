@@ -6,7 +6,11 @@
 package gazd.controller;
 
 import gazd.backend.*;
+import gazd.frontend.GuiManager;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  *
@@ -15,8 +19,10 @@ import java.util.LinkedList;
 public class MainController {
     
     Board board;
+    GuiManager gui;
     
-    public void newGame(){
+    public void newGame(GuiManager gui){
+       this.gui = gui;
        board = new Board();
        board.addPlayer(new Player(Piece.RED));
        board.addPlayer(new Player(Piece.BLUE));
@@ -26,12 +32,15 @@ public class MainController {
        board.start();
     }
     
-    public void round(){
-        board.round();
+    public void onRoll(){
+        board.queueLateAction(new MoveGameAction(board, gui));
+        board.queueLateAction(new NextPlayerGameAction(board, gui));
+
+        board.doTurn();
     }
     
     
-    public LinkedList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return board.getPlayers();
     }
     

@@ -5,6 +5,7 @@
  */
 package gazd.frontend.layouts;
 
+import gazd.frontend.GuiManager;
 import java.awt.FlowLayout;
 import gazd.frontend.menu.Menu;
 import javax.swing.JFrame;
@@ -18,18 +19,21 @@ public class StartScreen extends JFrame {
     MainPanel main;
     Menu menu;
 
-    public StartScreen() {
+    GuiManager gui;
+
+    public StartScreen(GuiManager gui) {
+	this.gui = gui;
         initStartScreen();          
     }
 
     private void initStartScreen() {
         this.setLayout(new FlowLayout());
-        main = new MainPanel();
+        main = new MainPanel(gui);
         add(main);
-        menu = new Menu();
+        menu = new Menu(gui);
         setJMenuBar(menu);
         setTitle("Gazdálkodj okosan");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+
 }

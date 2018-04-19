@@ -19,10 +19,15 @@ import javax.swing.JPanel;
  */
 public class ControlPanel extends JPanel{
     
-    private JLabel playerLabel;
+    private JLabel playerPiece;
+    private JLabel playerMoney;
+    private JLabel playerPosition;
     private JButton diceRollerButton;
 
-    public ControlPanel() {
+    private GuiManager gui;
+
+    public ControlPanel(GuiManager gui) {
+	this.gui = gui;
         init();
     }
     
@@ -34,8 +39,12 @@ public class ControlPanel extends JPanel{
     }
 
     private void initLabels() {
-        playerLabel = new JLabel("Akt. játékos");
-        add(playerLabel);
+        playerPiece = new JLabel("Jatekos szine");
+        playerMoney = new JLabel("Jatekos penze");
+        playerPosition = new JLabel("Jatekos helyzete");
+        add(playerPiece);
+        add(playerMoney);
+        add(playerPosition);
     }
 
     private void initButtons() {
@@ -45,7 +54,19 @@ public class ControlPanel extends JPanel{
     }
     
     private void doRoll(ActionEvent event){
-        GuiManager.doRoll();
+        gui.doRoll();
+    }
+
+    public JLabel getCurrentPlayerPieceLabel() {
+    	return playerPiece;
+    }
+
+    public JLabel getCurrentPlayerMoneyLabel() {
+    	return playerMoney;
+    }
+
+    public JLabel getCurrentPlayerPositionLabel() {
+    	return playerPosition;
     }
     
 }
