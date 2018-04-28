@@ -7,7 +7,7 @@ package gazd.frontend.layouts;
 
 import gazd.frontend.GuiManager;
 import java.awt.Color;
-import java.awt.Dimension;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 /**
@@ -28,7 +28,7 @@ public class MainPanel extends JPanel {
 
     private void initPanel() {
         setBackground(Color.red);
-        setPreferredSize(new Dimension(1100, 800));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
         controlPanel = new ControlPanel(gui);       
         boardPanel = new BoardPanel(gui);

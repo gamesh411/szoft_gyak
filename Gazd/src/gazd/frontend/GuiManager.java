@@ -8,12 +8,8 @@ package gazd.frontend;
 import gazd.backend.Player;
 import gazd.controller.MainController;
 import gazd.frontend.layouts.StartScreen;
-import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-import javax.crypto.spec.PSource;
-import javax.swing.JFrame;
 
 /**
  *

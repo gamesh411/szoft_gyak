@@ -27,7 +27,8 @@ public class StartScreen extends JFrame {
     }
 
     private void initStartScreen() {
-        this.setLayout(new FlowLayout());
+        setLayout(new FlowLayout());
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         main = new MainPanel(gui);
         add(main);
         menu = new Menu(gui);

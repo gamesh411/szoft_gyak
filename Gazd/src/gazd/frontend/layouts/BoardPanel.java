@@ -12,6 +12,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -25,14 +26,16 @@ public class BoardPanel extends JLayeredPane{
     
     private JLabel board;
     private GuiManager gui;
+    private final Dimension SCREEN_SIZE;
 
     public BoardPanel(GuiManager gui) {
 	this.gui = gui;
+        SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
         init();
     }
     
     private void init(){
-        setPreferredSize(new Dimension(1100, 700));
+        setPreferredSize(new Dimension(SCREEN_SIZE.width, SCREEN_SIZE.height - 300));
         setLayout(new FlowLayout());
         setBackgroundImage();
         
@@ -40,14 +43,13 @@ public class BoardPanel extends JLayeredPane{
 
     private void setBackgroundImage() {
         board = new JLabel(loadBackgroundImage());
-        board.setPreferredSize(new Dimension(1100, 700));
         add(board, new Integer(0));
 
     }
 
     private ImageIcon loadBackgroundImage() {
         Image img = new ImageIcon("img/board.jpg").getImage();
-        Image newimg = img.getScaledInstance(1100, 700, java.awt.Image.SCALE_SMOOTH);
+        Image newimg = img.getScaledInstance(SCREEN_SIZE.width, SCREEN_SIZE.height - 300, java.awt.Image.SCALE_SMOOTH);
         return new ImageIcon(newimg);
     }
     
@@ -59,7 +61,7 @@ public class BoardPanel extends JLayeredPane{
     }
     
     private void drawPlayer(Graphics g, Player player){
-        Point p = getPoint(1100, 700, player.getPosition(), player.getPiece().ordinal());
+        Point p = getPoint(SCREEN_SIZE.width, SCREEN_SIZE.height - 300, player.getPosition(), player.getPiece().ordinal());
         Image img = new ImageIcon("img/" +player.getPiece().name()+".jpg").getImage();
         g.drawImage(img, (int)p.getX(), (int)p.getY(),30,30, this);
     }
