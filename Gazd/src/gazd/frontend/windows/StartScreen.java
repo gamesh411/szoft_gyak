@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.frontend.layouts;
+package gazd.frontend.windows;
 
 import gazd.frontend.GuiManager;
+import gazd.frontend.layouts.MainPanel;
 import java.awt.FlowLayout;
 import gazd.frontend.menu.Menu;
 import javax.swing.JFrame;
