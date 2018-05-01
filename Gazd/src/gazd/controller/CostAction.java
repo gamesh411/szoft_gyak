@@ -14,19 +14,18 @@ import gazd.frontend.GuiManager;
  * @author endrefulop
  */
 public class CostAction implements IGameAction {
-    
-    Board board;
-    int cost;
+
+    private Board board;
+    private int cost;
 
     public CostAction(Board board, int cost) {
         this.board = board;
         this.cost = cost;
     }
-    
 
     @Override
     public void execute() {
         board.getCurrentPlayer().spendMoney(cost);
     }
-    
+
 }

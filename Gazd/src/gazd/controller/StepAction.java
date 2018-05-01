@@ -13,11 +13,11 @@ import gazd.frontend.GuiManager;
  *
  * @author endrefulop
  */
-public class MoveGameAction implements IGameAction {
-    
-    Board board;
-    
-    public MoveGameAction(Board board, GuiManager gui) {
+public class StepAction implements IGameAction {
+
+    private Board board;
+
+    public StepAction(Board board, GuiManager gui) {
         this.board = board;
     }
 
@@ -25,5 +25,5 @@ public class MoveGameAction implements IGameAction {
     public void execute() {
         board.step();
     }
-    
+
 }

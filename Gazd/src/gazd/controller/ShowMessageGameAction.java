@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
  * @author endrefulop
  */
 public class ShowMessageGameAction implements IGameAction {
-    
-    String message;
+
+    private String message;
 
     public ShowMessageGameAction(String message) {
         this.message = message;
@@ -24,7 +24,5 @@ public class ShowMessageGameAction implements IGameAction {
     public void execute() {
         JOptionPane.showMessageDialog(null, message);
     }
-    
-    
-    
+
 }

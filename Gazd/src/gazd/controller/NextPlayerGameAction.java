@@ -14,17 +14,16 @@ import gazd.frontend.GuiManager;
  * @author endrefulop
  */
 public class NextPlayerGameAction implements IGameAction {
-    
-    Board board;
+
+    private Board board;
 
     public NextPlayerGameAction(Board board, GuiManager gui) {
         this.board = board;
     }
-    
 
     @Override
     public void execute() {
         board.nextPlayer();
     }
-    
+
 }

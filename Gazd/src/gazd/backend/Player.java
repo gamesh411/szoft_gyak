@@ -10,14 +10,20 @@ package gazd.backend;
  * @author mmeta
  */
 public class Player {
-    int money;
-    int position;
-    Piece piece;
 
-    public Player(Piece piece) {
-        position = 0;
-        money = 10000;
+    private int money;
+    private int position;
+    private String name;
+    private Piece piece;
+
+    public Player(String name, Piece piece) {
+        this.name = name;
         this.piece = piece;
+        money = 10000;
+    }
+
+    public void spendMoney(int cost) {
+        money -= cost;
     }
 
     public Piece getPiece() {
@@ -43,13 +49,13 @@ public class Player {
     public void setPosition(int position) {
         this.position = position;
     }
-    
-    public void spendMoney(int cost){
-        money-=cost;
+
+    public String getName() {
+        return name;
     }
-    
-    
-    
-    
-    
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

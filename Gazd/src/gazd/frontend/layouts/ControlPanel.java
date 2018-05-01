@@ -18,8 +18,8 @@ import javax.swing.JPanel;
  *
  * @author <Andó Sándor Zsolt>
  */
-public class ControlPanel extends JPanel{
-    
+public class ControlPanel extends JPanel {
+
     private JLabel playerPiece;
     private JLabel playerMoney;
     private JLabel playerPosition;
@@ -29,11 +29,11 @@ public class ControlPanel extends JPanel{
     private GuiManager gui;
 
     public ControlPanel(GuiManager gui) {
-	this.gui = gui;
+        this.gui = gui;
         init();
     }
-    
-    private void init(){
+
+    private void init() {
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(1100, 100));
         initLabels();
@@ -59,36 +59,39 @@ public class ControlPanel extends JPanel{
         endRoundButton.setEnabled(false);
         add(endRoundButton);
     }
-    
-    private void doRoll(ActionEvent event){
+
+    private void doRoll(ActionEvent event) {
         gui.doRoll();
         diceRollerButton.setEnabled(false);
         endRoundButton.setEnabled(true);
     }
-    
-    private void endRound(ActionEvent event){
+
+    private void endRound(ActionEvent event) {
         gui.endRound();
         diceRollerButton.setEnabled(true);
         endRoundButton.setEnabled(false);
     }
 
     public JLabel getCurrentPlayerPieceLabel() {
-    	return playerPiece;
+        return playerPiece;
     }
 
     public JLabel getCurrentPlayerMoneyLabel() {
-    	return playerMoney;
+        return playerMoney;
     }
 
     public JLabel getCurrentPlayerPositionLabel() {
-    	return playerPosition;
+        return playerPosition;
     }
-    
-    public void update(){
-        diceRollerButton.setEnabled(!endRoundButton.isEnabled());
+
+    public void update() {
         Player p = gui.getCurrentPlayer();
-        playerMoney.setText(""+p.getMoney());
-        playerPiece.setText(""+p.getPiece());
-        playerPosition.setText(""+p.getPosition());
+        if (p != null) {
+            diceRollerButton.setEnabled(!endRoundButton.isEnabled());
+            playerMoney.setText("Pénz: " + p.getMoney());
+            playerPiece.setText("Név: " + p.getName());
+            playerPosition.setText("Pozíció: " + p.getPosition());
+        }
+
     }
 }

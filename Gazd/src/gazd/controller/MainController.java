@@ -17,42 +17,45 @@ import java.util.stream.Stream;
  * @author MetaPC
  */
 public class MainController {
-    
-    Board board;
-    GuiManager gui;
-    
-    public void newGame(GuiManager gui){
-       this.gui = gui;
-       board = new Board();
-       board.addPlayer(new Player(Piece.RED));
-       board.addPlayer(new Player(Piece.BLUE));
-       board.addPlayer(new Player(Piece.GREEN));
-       board.addPlayer(new Player(Piece.YELLOW));
-       board.addPlayer(new Player(Piece.PURPLE));
-       board.start();
-       gui.update();
+
+    private Board board;
+    private GuiManager gui;
+
+    public MainController(GuiManager gui) {
+        this.gui = gui;
     }
-    
-    public void onRoll(){
-        board.queueLateAction(new MoveGameAction(board, gui));
+
+    public void newGame() {
+        board = new Board();
+    }
+
+    public void start() {
+        board.start();
+        gui.update();
+    }
+
+    public void onRoll() {
+        board.queueLateAction(new StepAction(board, gui));
         board.doTurn();
         gui.update();
     }
-    
-    
+
     public List<Player> getPlayers() {
         return board.getPlayers();
     }
 
     public Player getCurrentPlayer() {
-       return board.getCurrentPlayer();
+        return board.getCurrentPlayer();
     }
 
     public void endRound() {
-       board.queueLateAction(new NextPlayerGameAction(board, gui));
-       board.doTurn();
-       gui.update();
+        board.queueLateAction(new NextPlayerGameAction(board, gui));
+        board.doTurn();
+        gui.update();
     }
-    
-    
+
+    public void addPlayer(String playerName, Piece color) {
+        board.addPlayer(new Player(playerName, color));
+    }
+
 }

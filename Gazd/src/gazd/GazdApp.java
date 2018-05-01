@@ -13,8 +13,8 @@ import gazd.frontend.GuiManager;
  */
 public class GazdApp {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         (new GuiManager()).start();
     }
-    
+
 }

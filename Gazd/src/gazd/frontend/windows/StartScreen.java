@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.frontend.layouts;
+package gazd.frontend.windows;
 
 import gazd.frontend.GuiManager;
+import gazd.frontend.layouts.MainPanel;
 import java.awt.FlowLayout;
 import gazd.frontend.menu.Menu;
 import javax.swing.JFrame;
@@ -15,19 +16,20 @@ import javax.swing.JFrame;
  * @author Dell
  */
 public class StartScreen extends JFrame {
-    
+
     MainPanel main;
     Menu menu;
 
     GuiManager gui;
 
     public StartScreen(GuiManager gui) {
-	this.gui = gui;
-        initStartScreen();          
+        this.gui = gui;
+        initStartScreen();
     }
 
     private void initStartScreen() {
-        this.setLayout(new FlowLayout());
+        setLayout(new FlowLayout());
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         main = new MainPanel(gui);
         add(main);
         menu = new Menu(gui);
@@ -37,8 +39,8 @@ public class StartScreen extends JFrame {
     }
 
     public void update() {
-       repaint();
-       main.update();
+        repaint();
+        main.update();
     }
 
 }
