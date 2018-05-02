@@ -5,9 +5,15 @@
  */
 package gazd.backend;
 
-import gazd.controller.CostAction;
-import gazd.controller.DrawCardAction;
-import gazd.controller.ShowMessageGameAction;
+
+import gazd.controller.action.CostAction;
+import gazd.controller.action.DiceStateAction;
+import gazd.controller.action.DrawCardAction;
+import gazd.controller.action.InterestAction;
+import gazd.controller.action.MoveAction;
+import gazd.controller.action.RelativeMoveAction;
+import gazd.controller.action.ShowMessageGameAction;
+import gazd.controller.action.SkipStateAction;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +33,7 @@ public class Board {
     private List<Player> players;
     private Player currentPlayer;
     private final IGameAction[] fields;
-    private final List<IGameAction> cards;
+    private final List<Card> cards;
     private final int BOARDSIZE = 42;
 
     private final Deque<IGameAction> actionQueue;
@@ -82,13 +88,15 @@ public class Board {
         Random rand = new Random();
         int dice = rand.nextInt(6) + 1;
         int newPosition = (currentPlayer.getPosition() + dice) % BOARDSIZE;
-        stepOn(newPosition);
+        currentPlayer.getState().turn();
+        if(currentPlayer.getState().canStep(currentPlayer, dice)) stepOn(newPosition);
 
     }
 
     public void stepOn(int newPosition) {
+        final int START = 0;
+        if(currentPlayer.getPosition()> newPosition && newPosition!=START) queueImmediateAction(new CostAction(this, -2000));
         currentPlayer.setPosition(newPosition);
-        //queueImmediateAction(fields[newPosition].onPlayerArrived(currentPlayer));
         queueImmediateAction(fields[newPosition]);
     }
 
@@ -97,30 +105,36 @@ public class Board {
     }
 
     public void drawCard() {
-        queueLateAction(cards.get(0));
+        queueImmediateAction(cards.get(0).getAction());
+        queueLateAction(new ShowMessageGameAction(cards.get(0).getMessage()));
         Collections.rotate(cards, 1);
     }
 
     private IGameAction[] fieldsFactory() {
         IGameAction[] fields = new IGameAction[BOARDSIZE];
         IntStream.range(0, BOARDSIZE).forEach(i -> fields[i] = new CostAction(this, 0));
+        fields[0] = new CostAction(this, -2000);
         fields[1] = new CostAction(this, 100);
+        fields[2] = new InterestAction(this,7);
         fields[3] = new DrawCardAction(this);
         fields[4] = new CostAction(this, 100);
         fields[8] = new CostAction(this, 20);
         fields[9] = new CostAction(this, 500);
         fields[10] = new DrawCardAction(this);
+        fields[13] = new SkipStateAction(this, 2,300);
         fields[14] = new CostAction(this, 100);
         fields[15] = new CostAction(this, 20);
         fields[16] = new DrawCardAction(this);
         fields[17] = new CostAction(this, 20);
         fields[18] = new CostAction(this, 50);
         fields[20] = new CostAction(this, 100);
+        fields[21] = new DiceStateAction(this,1,6);
         fields[22] = new CostAction(this, 20);
         fields[24] = new CostAction(this, 50);
         fields[28] = new CostAction(this, 300);
         fields[31] = new CostAction(this, 20);
         fields[32] = new DrawCardAction(this);
+        fields[34] = new SkipStateAction(this, 3,400);
         fields[36] = new CostAction(this, 20);
         fields[37] = new DrawCardAction(this);
         fields[38] = new CostAction(this, 100);
@@ -130,9 +144,36 @@ public class Board {
         return fields;
     }
 
-    private List<IGameAction> cardsFactory() {
-        List<IGameAction> cards = new LinkedList<>();
-        IntStream.range(0, BOARDSIZE).forEach(i -> cards.add(new ShowMessageGameAction("Kartya")));
+    private List<Card> cardsFactory() {
+        List<Card> cards = new LinkedList<>();
+        cards.add(new Card(new MoveAction(this,null,33), "KERAVILL-ban vásárlhatsz. Lépj a 33-as mezőre"));
+        cards.add(new Card(new MoveAction(this,null,0), "Lépj a START mezőre."));
+        cards.add(new Card(new CostAction(this,-400), "TOTO-n 400 eurót nyertél."));
+        cards.add(new Card(new CostAction(this,-10000), "LOTTÓ-n 10.000 eurót nyertél."));
+        cards.add(new Card(new MoveAction(this,null,34), "Lépj a 34-es mezőre."));
+        cards.add(new Card(new MoveAction(this,null,11), "Lépj a 11-es mezőre."));
+        cards.add(new Card(new InterestAction(this, 7), "OTP Bank 7% kamatot fizet."));
+        cards.add(new Card(new DrawCardAction(this),"Húzz még egy szerencsekártyát."));
+        cards.add(new Card(new MoveAction(this,null,38), "Hajókirándulás, lépj a 38-es mezőre."));
+        cards.add(new Card(new CostAction(this,-2500), "Újításért 2500 eurót fizet az OPT Bank."));
+        cards.add(new Card(new CostAction(this,50), "Fizess elő a HETEK hetilapra, 50 euró"));
+        cards.add(new Card(new CostAction(this,20), "Elromlott a videód, fizess 20 eurót."));
+        cards.add(new Card(new InterestAction(this, 15), "OTP Bank 15% kamatot fizet."));
+        cards.add(new Card(new CostAction(this,-400), "Jó munkádért 400 euró jutalomban részesülsz."));
+        cards.add(new Card(new CostAction(this,-6000), "TOTO-n 6000 eurót nyertél."));
+        cards.add(new Card(new MoveAction(this,null,31), "Lépj a 31-es mezőre."));
+        cards.add(new Card(new MoveAction(this,null,30), "Lépj a 30-es mezőre."));
+        cards.add(new Card(new CostAction(this,-800), "LOTTÓ-n 800 eurót nyertél."));
+        cards.add(new Card(new CostAction(this,-1000), "Jó munkádért 1000 euró jutalomban részesülsz."));
+        cards.add(new Card(new MoveAction(this,null,9), "Lépj a 9-es mezőre."));
+        cards.add(new Card(new MoveAction(this,null,26), "Lépj a 26-es mezőre.")); 
+        cards.add(new Card(new CostAction(this,70), "Fizess elő a Népszabadság hetilapra, 70 euró.")); 
+        cards.add(new Card(new RelativeMoveAction(this, null, 1), "Lépj előre 1 mezőt.")); 
+        cards.add(new Card(new RelativeMoveAction(this, null, 2), "Lépj előre 2 mezőt.")); 
+        cards.add(new Card(new RelativeMoveAction(this, null, -3), "Lépj vissza 3 mezőt."));
+        cards.add(new Card(new RelativeMoveAction(this, null, -3), "Lépj vissza 3 mezőt."));
+
+        Collections.shuffle(cards);
         return cards;
     }
 

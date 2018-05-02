@@ -56,7 +56,6 @@ public class InitGameScreen extends JFrame {
     }
 
     private void addPlayer(ActionEvent e) {
-        System.out.println("gazd.frontend.windows.InitGameScreen.addPlayer()");
         if (playerNameTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Üresen hagyott játékosnév mező");
         } else if (colorsComboBox.getItemCount() == 0) {

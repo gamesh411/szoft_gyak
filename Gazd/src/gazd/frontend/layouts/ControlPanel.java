@@ -89,7 +89,7 @@ public class ControlPanel extends JPanel {
         if (p != null) {
             diceRollerButton.setEnabled(!endRoundButton.isEnabled());
             playerMoney.setText("Pénz: " + p.getMoney());
-            playerPiece.setText("Név: " + p.getName());
+            playerPiece.setText("Név: " + p.getName()+" Szín:"+ p.getPiece());
             playerPosition.setText("Pozíció: " + p.getPosition());
         }
 

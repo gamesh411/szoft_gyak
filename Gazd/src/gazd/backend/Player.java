@@ -5,6 +5,9 @@
  */
 package gazd.backend;
 
+import gazd.backend.state.State;
+import gazd.backend.state.BasicState;
+
 /**
  *
  * @author mmeta
@@ -15,11 +18,13 @@ public class Player {
     private int position;
     private String name;
     private Piece piece;
+    private State state;
 
     public Player(String name, Piece piece) {
         this.name = name;
         this.piece = piece;
-        money = 10000;
+        money = 17100;
+        state = new BasicState();
     }
 
     public void spendMoney(int cost) {
@@ -57,5 +62,15 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+    
+    
 
 }

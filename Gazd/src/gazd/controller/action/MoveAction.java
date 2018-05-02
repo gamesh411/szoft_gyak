@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.controller;
+package gazd.controller.action;
 
 import gazd.backend.IGameAction;
 import gazd.backend.Board;
@@ -13,19 +13,19 @@ import gazd.frontend.GuiManager;
  *
  * @author endrefulop
  */
-public class CostAction implements IGameAction {
+public class MoveAction implements IGameAction {
 
     private Board board;
-    private int cost;
+    private int newPosition;
 
-    public CostAction(Board board, int cost) {
+    public MoveAction(Board board, GuiManager gui, int newPosition) {
         this.board = board;
-        this.cost = cost;
+        this.newPosition = newPosition;
     }
 
     @Override
     public void execute() {
-        board.getCurrentPlayer().spendMoney(cost);
+        board.stepOn(newPosition);
     }
 
 }

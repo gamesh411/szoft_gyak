@@ -5,6 +5,8 @@
  */
 package gazd.controller;
 
+import gazd.controller.action.NextPlayerGameAction;
+import gazd.controller.action.StepAction;
 import gazd.backend.*;
 import gazd.frontend.GuiManager;
 import java.util.ArrayList;
