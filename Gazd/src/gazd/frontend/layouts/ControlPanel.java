@@ -5,6 +5,7 @@
  */
 package gazd.frontend.layouts;
 
+import gazd.backend.Player;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -17,21 +18,22 @@ import javax.swing.JPanel;
  *
  * @author <Andó Sándor Zsolt>
  */
-public class ControlPanel extends JPanel{
-    
+public class ControlPanel extends JPanel {
+
     private JLabel playerPiece;
     private JLabel playerMoney;
     private JLabel playerPosition;
     private JButton diceRollerButton;
+    private JButton endRoundButton;
 
     private GuiManager gui;
 
     public ControlPanel(GuiManager gui) {
-	this.gui = gui;
+        this.gui = gui;
         init();
     }
-    
-    private void init(){
+
+    private void init() {
         setLayout(new FlowLayout());
         setPreferredSize(new Dimension(1100, 100));
         initLabels();
@@ -39,9 +41,9 @@ public class ControlPanel extends JPanel{
     }
 
     private void initLabels() {
-        playerPiece = new JLabel("Jatekos szine");
-        playerMoney = new JLabel("Jatekos penze");
-        playerPosition = new JLabel("Jatekos helyzete");
+        playerPiece = new JLabel();
+        playerMoney = new JLabel();
+        playerPosition = new JLabel();
         add(playerPiece);
         add(playerMoney);
         add(playerPosition);
@@ -51,22 +53,45 @@ public class ControlPanel extends JPanel{
         diceRollerButton = new JButton("Dobás");
         diceRollerButton.addActionListener(this::doRoll);
         add(diceRollerButton);
+        diceRollerButton.setEnabled(false);
+        endRoundButton = new JButton("Kör vége");
+        endRoundButton.addActionListener(this::endRound);
+        endRoundButton.setEnabled(false);
+        add(endRoundButton);
     }
-    
-    private void doRoll(ActionEvent event){
+
+    private void doRoll(ActionEvent event) {
         gui.doRoll();
+        diceRollerButton.setEnabled(false);
+        endRoundButton.setEnabled(true);
+    }
+
+    private void endRound(ActionEvent event) {
+        gui.endRound();
+        diceRollerButton.setEnabled(true);
+        endRoundButton.setEnabled(false);
     }
 
     public JLabel getCurrentPlayerPieceLabel() {
-    	return playerPiece;
+        return playerPiece;
     }
 
     public JLabel getCurrentPlayerMoneyLabel() {
-    	return playerMoney;
+        return playerMoney;
     }
 
     public JLabel getCurrentPlayerPositionLabel() {
-    	return playerPosition;
+        return playerPosition;
     }
-    
+
+    public void update() {
+        Player p = gui.getCurrentPlayer();
+        if (p != null) {
+            diceRollerButton.setEnabled(!endRoundButton.isEnabled());
+            playerMoney.setText("Pénz: " + p.getMoney());
+            playerPiece.setText("Név: " + p.getName()+" Szín:"+ p.getPiece());
+            playerPosition.setText("Pozíció: " + p.getPosition());
+        }
+
+    }
 }

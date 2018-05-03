@@ -15,30 +15,29 @@ import javax.swing.JMenuItem;
  *
  * @author Dell
  */
-public class Menu extends JMenuBar{
-    
+public class Menu extends JMenuBar {
+
     private final JMenu menu = new JMenu();
     private final JMenuItem start = new JMenuItem();
 
     private GuiManager gui;
 
     public Menu(GuiManager gui) {
-	this.gui = gui;
+        this.gui = gui;
         initMenu();
     }
-
 
     private void initMenu() {
         menu.setText("Játék");
         add(menu);
-        
+
         start.setText("Játék indítása");
         start.addActionListener(this::start);
         menu.add(start);
     }
-    
-    private void start(ActionEvent e){
+
+    private void start(ActionEvent e) {
         gui.newGame();
     }
-    
+
 }

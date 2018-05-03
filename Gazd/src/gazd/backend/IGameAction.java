@@ -10,5 +10,6 @@ package gazd.backend;
  * @author endrefulop
  */
 public interface IGameAction {
+
     void execute();
 }

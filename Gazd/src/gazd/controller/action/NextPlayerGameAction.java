@@ -3,28 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.controller;
+package gazd.controller.action;
 
 import gazd.backend.IGameAction;
-import javax.swing.JOptionPane;
+import gazd.backend.Board;
+import gazd.frontend.GuiManager;
 
 /**
  *
  * @author endrefulop
  */
-public class ShowMessageGameAction implements IGameAction {
-    
-    String message;
+public class NextPlayerGameAction implements IGameAction {
 
-    public ShowMessageGameAction(String message) {
-        this.message = message;
+    private Board board;
+
+    public NextPlayerGameAction(Board board, GuiManager gui) {
+        this.board = board;
     }
 
     @Override
     public void execute() {
-        JOptionPane.showMessageDialog(null, message);
+        board.nextPlayer();
     }
-    
-    
-    
+
 }

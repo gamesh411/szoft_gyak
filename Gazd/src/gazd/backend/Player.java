@@ -5,19 +5,30 @@
  */
 package gazd.backend;
 
+import gazd.backend.state.State;
+import gazd.backend.state.BasicState;
+
 /**
  *
  * @author mmeta
  */
 public class Player {
-    int money;
-    int position;
-    Piece piece;
 
-    public Player(Piece piece) {
-        position = 0;
-        money = 10000;
+    private int money;
+    private int position;
+    private String name;
+    private Piece piece;
+    private State state;
+
+    public Player(String name, Piece piece) {
+        this.name = name;
         this.piece = piece;
+        money = 17100;
+        state = new BasicState();
+    }
+
+    public void spendMoney(int cost) {
+        money -= cost;
     }
 
     public Piece getPiece() {
@@ -43,9 +54,23 @@ public class Player {
     public void setPosition(int position) {
         this.position = position;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
     
     
-    
-    
-    
+
 }
