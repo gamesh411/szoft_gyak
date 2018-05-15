@@ -27,7 +27,6 @@ public class MainPanel extends JPanel {
     }
 
     private void initPanel() {
-        setBackground(Color.red);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         controlPanel = new ControlPanel(gui);

@@ -9,12 +9,10 @@ import gazd.backend.Piece;
 import gazd.backend.Player;
 import gazd.controller.MainController;
 import gazd.frontend.windows.InitGameScreen;
+import gazd.frontend.windows.PurchaseScreen;
 import gazd.frontend.windows.StartScreen;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import javax.swing.ComboBoxModel;
 
 /**
  *
@@ -24,6 +22,7 @@ public final class GuiManager {
 
     private StartScreen screen;
     private InitGameScreen initGameScreen;
+    private PurchaseScreen purchaseScreen;
     private MainController control;
 
     public void start() {
@@ -60,7 +59,6 @@ public final class GuiManager {
 
     public void endRound() {
         control.endRound();
-
     }
 
     public Piece[] getColors() {
@@ -76,5 +74,27 @@ public final class GuiManager {
         control.start();
         screen.repaint();
     }
+
+    public void doPurchase() {
+        purchaseScreen = new PurchaseScreen(this);
+        purchaseScreen.pack();
+        purchaseScreen.setVisible(true);
+    }
+
+    /*
+    public List<Item> getAllItems() {
+        //TODO: create service.getAllItems + Item class
+        return service.getAllItems();
+    }
+    
+    public List<Items> getCurrentPlayersItems() {
+        //TODO: create service.getCurrentPlayersItems
+        return service.getCurrentPlayersItems();
+    }
+
+    public void buySelectedItem(Object selectedItem) {
+        //TODO: create service.buySelectedItem method
+        service.buySelectedItem(selectedItem);
+    }*/
 
 }
