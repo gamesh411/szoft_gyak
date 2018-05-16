@@ -7,6 +7,9 @@ package gazd.backend;
 
 import gazd.backend.state.State;
 import gazd.backend.state.BasicState;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -19,12 +22,27 @@ public class Player {
     private String name;
     private Piece piece;
     private State state;
+    private Set<Property> properties; 
+
+    public Set<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperty(Set<Property> properties) {
+        this.properties = properties;
+    }
+    
+    public void addProperty(Property property) {
+        properties.add(property);
+    }
+    
 
     public Player(String name, Piece piece) {
         this.name = name;
         this.piece = piece;
         money = 17100;
         state = new BasicState();
+        properties = new HashSet<>();
     }
 
     public void spendMoney(int cost) {

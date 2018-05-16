@@ -78,6 +78,7 @@ public class ControlPanel extends JPanel {
     }
     
     private void doPurchase(ActionEvent event) {
+        
         gui.doPurchase();
     }
 

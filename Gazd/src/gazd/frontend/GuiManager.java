@@ -7,12 +7,15 @@ package gazd.frontend;
 
 import gazd.backend.Piece;
 import gazd.backend.Player;
+import gazd.backend.Property;
 import gazd.controller.MainController;
 import gazd.frontend.windows.InitGameScreen;
 import gazd.frontend.windows.PurchaseScreen;
 import gazd.frontend.windows.StartScreen;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -81,20 +84,24 @@ public final class GuiManager {
         purchaseScreen.setVisible(true);
     }
 
-    /*
-    public List<Item> getAllItems() {
-        //TODO: create service.getAllItems + Item class
-        return service.getAllItems();
+    
+    public List<Property> getAllItems() {
+        return new LinkedList<>(control.getFieldItems());
     }
     
-    public List<Items> getCurrentPlayersItems() {
-        //TODO: create service.getCurrentPlayersItems
-        return service.getCurrentPlayersItems();
+    public Set<Property> getCurrentPlayersItems() {
+       return getCurrentPlayer().getProperties();
     }
 
-    public void buySelectedItem(Object selectedItem) {
+    public void buySelectedItem(Property selectedItem) {
         //TODO: create service.buySelectedItem method
-        service.buySelectedItem(selectedItem);
-    }*/
+        control.buySelectedItem(selectedItem);
+    }
+
+    public void checkGame() {
+        control.checkGame();
+    }
+
+    
 
 }

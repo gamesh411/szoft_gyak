@@ -5,10 +5,12 @@
  */
 package gazd.frontend.windows;
 
+import gazd.backend.Property;
 import gazd.frontend.GuiManager;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,7 +26,7 @@ public class PurchaseScreen extends JFrame {
 
     private GuiManager gui;
     private JTable ownedItemsTable;
-    private JComboBox availableItemsComboBox;
+    private JComboBox<Property> availableItemsComboBox;
     private JButton buySelectedItemButton, cancelButton; 
 
     public PurchaseScreen(GuiManager gui) {
@@ -39,18 +41,24 @@ public class PurchaseScreen extends JFrame {
         //TODO: make COLUMN_NAMES_CONSTANT
         ownedItemsTable = new JTable();
         fillOwnedItemsTableWithContent();
+        JLabel label2 = new JLabel("Sajat:");
+        add(label2);
         add(ownedItemsTable);
     }
 
     private void initavailableItemsComboBox() {
-        availableItemsComboBox = new JComboBox();
+        availableItemsComboBox = new JComboBox<>();
         JLabel label = new JLabel("Megvásárolható elemek");
+        
         add(label);
         add(availableItemsComboBox);
         
-        /*gui.getAllItems().foreach(item -> {
+        List<Property> l = gui.getAllItems();
+        l.removeAll(gui.getCurrentPlayersItems());
+        
+        l.forEach(item -> {
             availableItemsComboBox.addItem(item);
-        });*/
+        });
     }
 
     private void initButtons() {
@@ -66,17 +74,21 @@ public class PurchaseScreen extends JFrame {
 
     private void fillOwnedItemsTableWithContent() {
         //TODO: make COLUMN_NAMES_CONSTANT
-        /*ownedItemsTable.removeAll();
-        DefaultTableModel dtm = new DefaultTableModel(COLUMN_NAMES_CONSTANT, 0);
-
-        gui.getCurrentPlayersItems().foreach(row -> {
-            dtm.addRow(row);
+        ownedItemsTable.removeAll();
+        DefaultTableModel dtm = new DefaultTableModel(new String[]{"Tulajdon"}, 0);
+        
+        gui.getCurrentPlayersItems().forEach(row -> {
+            dtm.addRow(new Property[]{row});
         });
-        ownedItemsTable.setModel(dtm);*/
+        ownedItemsTable.setModel(dtm);
+        
     }
     
     private void buySelectedItem(ActionEvent event){
-        //gui.buySelectedItem(availableItemsComboBox.getSelectedItem());
+        Property selected = (Property)availableItemsComboBox.getSelectedItem();
+        gui.buySelectedItem(selected);
+        gui.checkGame();
+        availableItemsComboBox.removeItem(selected);
         fillOwnedItemsTableWithContent();
     }
     

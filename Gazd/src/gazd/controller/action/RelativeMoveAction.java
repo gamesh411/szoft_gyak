@@ -15,8 +15,8 @@ import gazd.frontend.GuiManager;
  */
 public class RelativeMoveAction implements IGameAction {
 
-    private Board board;
-    private int relativePosition;
+    private final Board board;
+    private final int relativePosition;
 
     public RelativeMoveAction(Board board, GuiManager gui, int relativePosition) {
         this.board = board;

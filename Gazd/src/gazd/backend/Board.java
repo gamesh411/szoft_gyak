@@ -16,13 +16,19 @@ import gazd.controller.action.ShowMessageGameAction;
 import gazd.controller.action.SkipStateAction;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,7 +38,8 @@ public class Board {
 
     private List<Player> players;
     private Player currentPlayer;
-    private final IGameAction[] fields;
+    private final Field[] fields;
+
     private final List<Card> cards;
     private final int BOARDSIZE = 42;
 
@@ -97,7 +104,7 @@ public class Board {
         final int START = 0;
         if(currentPlayer.getPosition()> newPosition && newPosition!=START) queueImmediateAction(new CostAction(this, -2000));
         currentPlayer.setPosition(newPosition);
-        queueImmediateAction(fields[newPosition]);
+        queueImmediateAction(fields[newPosition].getAction());
     }
 
     public void nextPlayer() {
@@ -110,7 +117,7 @@ public class Board {
         Collections.rotate(cards, 1);
     }
 
-    private IGameAction[] fieldsFactory() {
+    private Field[] fieldsFactory() {
         IGameAction[] fields = new IGameAction[BOARDSIZE];
         IntStream.range(0, BOARDSIZE).forEach(i -> fields[i] = new CostAction(this, 0));
         fields[0] = new CostAction(this, -2000);
@@ -140,8 +147,14 @@ public class Board {
         fields[38] = new CostAction(this, 100);
         fields[40] = new CostAction(this, 20);
         fields[41] = new CostAction(this, 200);
-
-        return fields;
+        Field[] f = Arrays.stream(fields).map(s -> new Field(s)).toArray(Field[]::new);
+        
+        f[11].setProperties(new HashSet<>(Arrays.asList(Property.KITCHEN,Property.LIVING)));
+        f[19].setProperties(new HashSet<>(Arrays.asList(Property.HOUSE)));
+        f[33].setProperties(new HashSet<>(Arrays.asList(Property.HOUSEHOLD)));
+        f[35].setProperties(new HashSet<>(Arrays.asList(Property.CAR)));
+        f[39].setProperties(new HashSet<>(Arrays.asList(Property.HOUSE)));
+        return f;
     }
 
     private List<Card> cardsFactory() {
@@ -172,9 +185,20 @@ public class Board {
         cards.add(new Card(new RelativeMoveAction(this, null, 2), "Lépj előre 2 mezőt.")); 
         cards.add(new Card(new RelativeMoveAction(this, null, -3), "Lépj vissza 3 mezőt."));
         cards.add(new Card(new RelativeMoveAction(this, null, -3), "Lépj vissza 3 mezőt."));
-
         Collections.shuffle(cards);
         return cards;
+    }
+    
+    public Field[] getFields() {
+        return fields;
+    }
+
+    public void checkGame() {
+        if(currentPlayer.getProperties().size()== Property.values().length){
+            JOptionPane.showMessageDialog(null, "Győztes: "+currentPlayer.getName());
+            queueImmediateAction(() -> System.exit(0));
+        }
+        
     }
 
 }

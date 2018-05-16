@@ -12,6 +12,7 @@ import gazd.frontend.GuiManager;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -59,5 +60,18 @@ public class MainController {
     public void addPlayer(String playerName, Piece color) {
         board.addPlayer(new Player(playerName, color));
     }
+
+    public void buySelectedItem(Property selectedItem) {
+        board.getCurrentPlayer().addProperty(selectedItem);
+    }
+
+    public Set<Property> getFieldItems() {
+        return board.getFields()[board.getCurrentPlayer().getPosition()].getProperties();
+    }
+
+    public void checkGame() {
+        board.checkGame();
+    }
+
 
 }
