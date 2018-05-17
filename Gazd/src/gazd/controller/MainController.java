@@ -10,6 +10,8 @@ import gazd.controller.action.StepAction;
 import gazd.backend.*;
 import gazd.frontend.GuiManager;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -58,7 +60,18 @@ public class MainController {
     }
 
     public void addPlayer(String playerName, Piece color) {
-        board.addPlayer(new Player(playerName, color));
+    	Player newPlayer = new Player(playerName, color);
+    	
+    	// For demo purposes randomly leave out one property.
+    	List<Property> allProperties = new ArrayList<>();
+    	allProperties.addAll(Arrays.asList(Property.values()));
+    	
+    	Collections.shuffle(allProperties);
+    	allProperties = allProperties.subList(0, allProperties.size() - 1);
+    	
+    	allProperties.stream().forEach(prop -> newPlayer.addProperty(prop));
+
+        board.addPlayer(newPlayer);
     }
 
     public void buySelectedItem(Property selectedItem) {
