@@ -6,7 +6,6 @@
 package gazd.frontend.layouts;
 
 import gazd.frontend.GuiManager;
-import java.awt.Color;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 

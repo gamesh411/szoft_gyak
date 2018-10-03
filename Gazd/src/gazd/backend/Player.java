@@ -7,7 +7,7 @@ package gazd.backend;
 
 import gazd.backend.state.State;
 import gazd.backend.state.BasicState;
-import java.util.EnumSet;
+import gazd.backend.state.SkipState;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -88,7 +88,12 @@ public class Player {
     public void setState(State state) {
         this.state = state;
     }
-    
-    
 
+    boolean canStep() {
+        return this.state.canStep(this, money);
+    }
+
+    void decSkip() {
+        this.state.turn();
+    }
 }

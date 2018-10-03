@@ -77,8 +77,7 @@ public class ControlPanel extends JPanel {
         endRoundButton.setEnabled(false);
     }
     
-    private void doPurchase(ActionEvent event) {
-        
+    private void doPurchase(ActionEvent event) {      
         gui.doPurchase();
     }
 

@@ -6,6 +6,7 @@
 package gazd.backend;
 
 
+import gazd.backend.state.SkipState;
 import gazd.controller.action.CostAction;
 import gazd.controller.action.DiceStateAction;
 import gazd.controller.action.DrawCardAction;
@@ -19,15 +20,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import javax.swing.JOptionPane;
 
 /**
@@ -109,11 +106,16 @@ public class Board {
 
     public void nextPlayer() {
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+        
+        if (!currentPlayer.canStep() && currentPlayer.getState() instanceof SkipState) {
+            currentPlayer.decSkip();
+            nextPlayer();
+        }
     }
 
     public void drawCard() {
         queueImmediateAction(cards.get(0).getAction());
-        queueLateAction(new ShowMessageGameAction(cards.get(0).getMessage()));
+        queueLateAction(new ShowMessageGameAction(currentPlayer.getPosition() + " mező: " + cards.get(0).getMessage()));
         Collections.rotate(cards, 1);
     }
 

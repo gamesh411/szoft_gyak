@@ -7,7 +7,6 @@ package gazd.controller.action;
 
 import gazd.backend.IGameAction;
 import gazd.backend.Board;
-import gazd.frontend.GuiManager;
 
 /**
  *

@@ -8,7 +8,6 @@ package gazd.controller.action;
 import gazd.backend.Board;
 import gazd.backend.IGameAction;
 import gazd.backend.state.SkipState;
-import gazd.backend.state.State;
 
 /**
  *
