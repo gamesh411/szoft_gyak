@@ -9,11 +9,8 @@ import gazd.controller.action.NextPlayerGameAction;
 import gazd.controller.action.StepAction;
 import gazd.backend.*;
 import gazd.frontend.GuiManager;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  *
@@ -66,12 +63,14 @@ public class MainController {
     }
 
     public Set<Property> getFieldItems() {
-        return board.getFields()[board.getCurrentPlayer().getPosition()].getProperties();
+        return board.getFields()[board.getCurrentPlayersPosition()].getProperties();
     }
 
     public void checkGame() {
         board.checkGame();
     }
 
-
+    public boolean isAnyPurchasableItem() {
+        return !board.getFields()[board.getCurrentPlayersPosition()].getProperties().isEmpty();
+    }
 }

@@ -12,7 +12,6 @@ import gazd.controller.MainController;
 import gazd.frontend.windows.InitGameScreen;
 import gazd.frontend.windows.PurchaseScreen;
 import gazd.frontend.windows.StartScreen;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -102,6 +101,7 @@ public final class GuiManager {
         control.checkGame();
     }
 
-    
-
+    public boolean isAnyPurchasAbleItem() {
+        return control.isAnyPurchasableItem();
+    }
 }

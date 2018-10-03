@@ -27,7 +27,7 @@ public class SkipState implements State {
 
     @Override
     public boolean canStep(Player player,int diceNumber) {
-        return skipTurns<0;
+        return skipTurns < 0;
     }
     
     

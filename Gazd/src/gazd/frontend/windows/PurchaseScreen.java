@@ -56,9 +56,7 @@ public class PurchaseScreen extends JFrame {
         List<Property> l = gui.getAllItems();
         l.removeAll(gui.getCurrentPlayersItems());
         
-        l.forEach(item -> {
-            availableItemsComboBox.addItem(item);
-        });
+        l.forEach(availableItemsComboBox::addItem);
     }
 
     private void initButtons() {

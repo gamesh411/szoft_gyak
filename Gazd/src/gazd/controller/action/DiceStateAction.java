@@ -18,16 +18,15 @@ public class DiceStateAction implements IGameAction {
     Integer[] diceNumbers;
     Board board;
 
-    public DiceStateAction(Board board,Integer... diceNumbers) {
+    public DiceStateAction(Board board, Integer... diceNumbers) {
         this.diceNumbers = diceNumbers;
         this.board = board;
     }
-    
-    
+
     @Override
     public void execute() {
         board.getCurrentPlayer().setState(new DiceState(diceNumbers));
-        
+
     }
-    
+
 }
