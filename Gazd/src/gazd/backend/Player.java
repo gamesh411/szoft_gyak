@@ -7,7 +7,6 @@ package gazd.backend;
 
 import gazd.backend.state.State;
 import gazd.backend.state.BasicState;
-import gazd.backend.state.SkipState;
 import java.util.HashSet;
 import java.util.Set;
 

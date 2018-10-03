@@ -100,4 +100,8 @@ public final class GuiManager {
     public void checkGame() {
         control.checkGame();
     }
+
+    public boolean isAnyPurchasAbleItem() {
+        return control.isAnyPurchasableItem();
+    }
 }

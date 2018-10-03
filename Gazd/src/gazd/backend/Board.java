@@ -203,4 +203,8 @@ public class Board {
         
     }
 
+    public int getCurrentPlayersPosition() {
+        return currentPlayer.getPosition();
+    }
+
 }

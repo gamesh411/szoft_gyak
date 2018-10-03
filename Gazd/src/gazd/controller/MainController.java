@@ -63,10 +63,14 @@ public class MainController {
     }
 
     public Set<Property> getFieldItems() {
-        return board.getFields()[board.getCurrentPlayer().getPosition()].getProperties();
+        return board.getFields()[board.getCurrentPlayersPosition()].getProperties();
     }
 
     public void checkGame() {
         board.checkGame();
+    }
+
+    public boolean isAnyPurchasableItem() {
+        return !board.getFields()[board.getCurrentPlayersPosition()].getProperties().isEmpty();
     }
 }

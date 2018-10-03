@@ -76,8 +76,8 @@ public class ControlPanel extends JPanel {
         diceRollerButton.setEnabled(true);
         endRoundButton.setEnabled(false);
     }
-    
-    private void doPurchase(ActionEvent event) {      
+
+    private void doPurchase(ActionEvent event) {
         gui.doPurchase();
     }
 
@@ -97,9 +97,9 @@ public class ControlPanel extends JPanel {
         Player p = gui.getCurrentPlayer();
         if (p != null) {
             diceRollerButton.setEnabled(!endRoundButton.isEnabled());
-            purchaseButton.setEnabled(true);
+            purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
             playerMoney.setText("Pénz: " + p.getMoney());
-            playerPiece.setText("Név: " + p.getName()+" Szín:"+ p.getPiece());
+            playerPiece.setText("Név: " + p.getName() + " Szín:" + p.getPiece());
             playerPosition.setText("Pozíció: " + p.getPosition());
         }
 
