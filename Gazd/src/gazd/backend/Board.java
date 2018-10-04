@@ -12,6 +12,7 @@ import gazd.controller.action.DiceStateAction;
 import gazd.controller.action.DrawCardAction;
 import gazd.controller.action.InterestAction;
 import gazd.controller.action.MoveAction;
+import gazd.controller.action.PropertyAddAction;
 import gazd.controller.action.RelativeMoveAction;
 import gazd.controller.action.ShowMessageGameAction;
 import gazd.controller.action.SkipStateAction;
@@ -187,6 +188,13 @@ public class Board {
         cards.add(new Card(new RelativeMoveAction(this, null, 2), "Lépj előre 2 mezőt.")); 
         cards.add(new Card(new RelativeMoveAction(this, null, -3), "Lépj vissza 3 mezőt."));
         cards.add(new Card(new RelativeMoveAction(this, null, -3), "Lépj vissza 3 mezőt."));
+        cards.add(new Card(new PropertyAddAction(this,Arrays.asList(new Property[]{Property.HOUSEHOLD})),
+                "Ajándékul háztarrtási bútorokat kaptál ajándékba.")); 
+        cards.add(new Card(new PropertyAddAction(this,Arrays.asList(new Property[]{Property.KITCHEN})),
+                "Ajándékul konyhai bútort kaptál ajándékba.")); 
+        cards.add(new Card(new PropertyAddAction(this,Arrays.asList(new Property[]{Property.LIVING})),
+                "Ajándékul szobabútort kaptál ajándékba.")); 
+      
         Collections.shuffle(cards);
         return cards;
     }
