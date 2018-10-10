@@ -9,9 +9,9 @@ import gazd.backend.Piece;
 import gazd.backend.Player;
 import gazd.backend.Property;
 import gazd.controller.MainController;
-import gazd.frontend.windows.InitGameScreen;
-import gazd.frontend.windows.PurchaseScreen;
-import gazd.frontend.windows.StartScreen;
+import gazd.frontend.windows.StartNewGameWindow;
+import gazd.frontend.windows.PurchaseWindow;
+import gazd.frontend.windows.GameWindow;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -22,13 +22,13 @@ import java.util.Set;
  */
 public final class GuiManager {
 
-    private StartScreen screen;
-    private InitGameScreen initGameScreen;
-    private PurchaseScreen purchaseScreen;
+    private GameWindow screen;
+    private StartNewGameWindow initGameScreen;
+    private PurchaseWindow purchaseScreen;
     private MainController control;
 
     public void start() {
-        screen = new StartScreen(this);
+        screen = new GameWindow(this);
         screen.pack();
         screen.setVisible(true);
     }
@@ -36,7 +36,7 @@ public final class GuiManager {
     public void newGame() {
         control = new MainController(this);
         control.newGame();
-        initGameScreen = new InitGameScreen(this);
+        initGameScreen = new StartNewGameWindow(this);
         initGameScreen.pack();
         initGameScreen.setVisible(true);
     }
@@ -54,7 +54,6 @@ public final class GuiManager {
         return control == null ? null : control.getCurrentPlayer();
     }
 
-    //TODO: Some consistent update implementation across the gui.
     public void update() {
         screen.update();
     }
@@ -64,7 +63,6 @@ public final class GuiManager {
     }
 
     public Piece[] getColors() {
-        //Is it okay, or should we return with MainControllers getColors method?
         return Piece.values();
     }
 
@@ -78,7 +76,7 @@ public final class GuiManager {
     }
 
     public void doPurchase() {
-        purchaseScreen = new PurchaseScreen(this);
+        purchaseScreen = new PurchaseWindow(this);
         purchaseScreen.pack();
         purchaseScreen.setVisible(true);
     }
@@ -93,7 +91,6 @@ public final class GuiManager {
     }
 
     public void buySelectedItem(Property selectedItem) {
-        //TODO: create service.buySelectedItem method
         control.buySelectedItem(selectedItem);
     }
 

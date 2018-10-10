@@ -15,14 +15,14 @@ import javax.swing.JFrame;
  *
  * @author Dell
  */
-public class StartScreen extends JFrame {
+public class GameWindow extends JFrame {
 
     MainPanel main;
     Menu menu;
 
     GuiManager gui;
 
-    public StartScreen(GuiManager gui) {
+    public GameWindow(GuiManager gui) {
         this.gui = gui;
         initStartScreen();
     }
