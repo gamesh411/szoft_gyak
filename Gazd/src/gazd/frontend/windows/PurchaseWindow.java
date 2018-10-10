@@ -10,7 +10,8 @@ import gazd.frontend.GuiManager;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -23,40 +24,81 @@ import javax.swing.table.DefaultTableModel;
  * @author <Andó Sándor Zsolt>
  */
 public class PurchaseWindow extends JFrame {
+    
+    private static final String OWNED_PROPERTIES = "Eddigi tulajdon:";
+    private static final String NO_PROPERTIES = "Még nincsen tulajdona!";
+
+    private static final String AVAILABLE_ITEMS = "Megvásárolható elemek:";
+    private static final String NO_MORE_ITEMS = "Nem maradt megvásárolható elem!";
 
     private GuiManager gui;
+    private Set<Property> ownedItems;
+    private Set<Property> availableItems;
+    
     private JTable ownedItemsTable;
+    
+    private boolean hasAnyItems;
+    private boolean canPurchaseAnyItems;
+
+    private JLabel ownedItemsLabel;
+    private JLabel availableItemsLabel;
+    
     private JComboBox<Property> availableItemsComboBox;
-    private JButton buySelectedItemButton, cancelButton; 
+    private JButton buySelectedItemButton, cancelButton;
 
     public PurchaseWindow(GuiManager gui) {
         this.gui = gui;
-        setLayout(new GridBagLayout());
-        initOwnedItemsTable();
-        initavailableItemsComboBox();
-        initButtons();
+        onCreate();
+        onUpdate();
     }
-
-    private void initOwnedItemsTable() {
+    
+    private void onCreate() {
+        setLayout(new GridBagLayout());
         //TODO: make COLUMN_NAMES_CONSTANT
         ownedItemsTable = new JTable();
         fillOwnedItemsTableWithContent();
-        JLabel label2 = new JLabel("Sajat:");
-        add(label2);
+        ownedItemsLabel = new JLabel();
+        add(ownedItemsLabel);
         add(ownedItemsTable);
+        initavailableItemsComboBox();
+        initButtons();
     }
+    
+    private void onUpdate() {
+        if (!ownedItems.isEmpty()) {
+            ownedItemsLabel.setText(OWNED_PROPERTIES);
+            ownedItemsTable.setVisible(true);
+        } else {
+            ownedItemsLabel.setText(NO_PROPERTIES);
+            ownedItemsTable.setVisible(false);
+        }
+        
+        if (!availableItems.isEmpty()) {
+            availableItemsLabel.setText(AVAILABLE_ITEMS);
+            availableItemsComboBox.setVisible(true);
+        } else {
+            availableItemsLabel.setText(NO_MORE_ITEMS);
+            availableItemsComboBox.setVisible(false);
+        }
+    }
+    
 
     private void initavailableItemsComboBox() {
+        Set<Property> propertiesAvailableForPurchase = new HashSet<>(gui.getAllItems());
+        propertiesAvailableForPurchase.removeAll(gui.getCurrentPlayersItems());
+        
+        if (propertiesAvailableForPurchase.isEmpty()) {
+            JLabel noMoreItemsLabel = new JLabel(NO_MORE_ITEMS);
+            add(noMoreItemsLabel);
+            return;
+        }
+        
+        availableItemsLabel = new JLabel(AVAILABLE_ITEMS);
+        add(availableItemsLabel);
+        
         availableItemsComboBox = new JComboBox<>();
-        JLabel label = new JLabel("Megvásárolható elemek");
-        
-        add(label);
+        propertiesAvailableForPurchase.forEach(availableItemsComboBox::addItem);
         add(availableItemsComboBox);
-        
-        List<Property> l = gui.getAllItems();
-        l.removeAll(gui.getCurrentPlayersItems());
-        
-        l.forEach(availableItemsComboBox::addItem);
     }
 
     private void initButtons() {

@@ -87,6 +87,10 @@ public class Board {
             actionQueue.poll().execute();
         }
     }
+    
+    public void performAction(IGameAction action) {
+        action.execute();
+    }
 
     public void step() {
 
