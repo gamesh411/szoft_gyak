@@ -24,7 +24,7 @@ import javax.swing.JTextField;
  *
  * @author <Andó Sándor Zsolt>
  */
-public class InitGameScreen extends JFrame {
+public class StartNewGameWindow extends JFrame {
 
     private final GuiManager gui;
     private JComboBox<Piece> colorsComboBox;
@@ -32,7 +32,7 @@ public class InitGameScreen extends JFrame {
     private JTextField playerNameTextField;
     private JButton addPlayerButton, finishNewGameInitializationButton;
 
-    public InitGameScreen(GuiManager gui) {
+    public StartNewGameWindow(GuiManager gui) {
         this.gui = gui;
         initNewGameScreen();
     }

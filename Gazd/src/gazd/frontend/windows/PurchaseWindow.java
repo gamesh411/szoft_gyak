@@ -22,14 +22,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author <Andó Sándor Zsolt>
  */
-public class PurchaseScreen extends JFrame {
+public class PurchaseWindow extends JFrame {
 
     private GuiManager gui;
     private JTable ownedItemsTable;
     private JComboBox<Property> availableItemsComboBox;
     private JButton buySelectedItemButton, cancelButton; 
 
-    public PurchaseScreen(GuiManager gui) {
+    public PurchaseWindow(GuiManager gui) {
         this.gui = gui;
         setLayout(new GridBagLayout());
         initOwnedItemsTable();
