@@ -5,7 +5,7 @@
  */
 package gazd.backend.state;
 
-import gazd.backend.Player;
+import gazd.backend.domain.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 public class DiceState implements State {
 
     private final List<Integer> diceNumbers;
-    boolean canStep = false;
+    private boolean canStep = false;
     
     public DiceState(Integer... diceNumber) {
         this.diceNumbers = new ArrayList<>(Arrays.asList(diceNumber));

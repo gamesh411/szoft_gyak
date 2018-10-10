@@ -5,12 +5,11 @@
  */
 package gazd.controller.action;
 
-import gazd.backend.IGameAction;
-import gazd.backend.Board;
-import gazd.backend.Player;
+import gazd.backend.domain.Board;
+import gazd.backend.domain.Player;
 
 
-public class InterestAction implements IGameAction {
+public class InterestAction implements GameAction {
 
     private Board board;
     private int interest;

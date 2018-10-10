@@ -5,9 +5,9 @@
  */
 package gazd.frontend;
 
-import gazd.backend.Piece;
-import gazd.backend.Player;
-import gazd.backend.Property;
+import gazd.backend.domain.component.Piece;
+import gazd.backend.domain.Player;
+import gazd.backend.domain.component.Property;
 import gazd.controller.MainController;
 import gazd.frontend.windows.StartNewGameWindow;
 import gazd.frontend.windows.PurchaseWindow;

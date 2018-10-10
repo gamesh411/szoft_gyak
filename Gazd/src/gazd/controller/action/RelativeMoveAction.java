@@ -5,15 +5,14 @@
  */
 package gazd.controller.action;
 
-import gazd.backend.IGameAction;
-import gazd.backend.Board;
+import gazd.backend.domain.Board;
 import gazd.frontend.GuiManager;
 
 /**
  *
  * @author endrefulop
  */
-public class RelativeMoveAction implements IGameAction {
+public class RelativeMoveAction implements GameAction {
 
     private final Board board;
     private final int relativePosition;

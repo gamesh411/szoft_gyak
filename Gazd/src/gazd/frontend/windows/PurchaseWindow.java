@@ -5,7 +5,7 @@
  */
 package gazd.frontend.windows;
 
-import gazd.backend.Property;
+import gazd.backend.domain.component.Property;
 import gazd.frontend.GuiManager;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;

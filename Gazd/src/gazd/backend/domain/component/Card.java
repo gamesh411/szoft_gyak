@@ -3,27 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.backend;
+package gazd.backend.domain.component;
+
+import gazd.controller.action.GameAction;
 
 /**
  *
  * @author MetaPC
  */
-class Card {
+public class Card {
     
-    private IGameAction action;
+    private GameAction action;
     private String message;
 
-    public Card(IGameAction action, String message) {
+    public Card(GameAction action, String message) {
         this.action = action;
         this.message = message;
     }
 
-    public IGameAction getAction() {
+    public GameAction getAction() {
         return action;
     }
 
-    public void setAction(IGameAction action) {
+    public void setAction(GameAction action) {
         this.action = action;
     }
 

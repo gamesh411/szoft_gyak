@@ -5,14 +5,13 @@
  */
 package gazd.controller.action;
 
-import gazd.backend.IGameAction;
-import gazd.backend.Board;
+import gazd.backend.domain.Board;
 
 /**
  *
  * @author endrefulop
  */
-public class CostAction implements IGameAction {
+public class CostAction implements GameAction {
 
     private Board board;
     private int cost;

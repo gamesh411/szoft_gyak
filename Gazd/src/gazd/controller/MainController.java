@@ -5,9 +5,12 @@
  */
 package gazd.controller;
 
+import gazd.backend.domain.component.Property;
+import gazd.backend.domain.component.Piece;
+import gazd.backend.domain.Player;
+import gazd.backend.domain.Board;
 import gazd.controller.action.NextPlayerGameAction;
 import gazd.controller.action.StepAction;
-import gazd.backend.*;
 import gazd.controller.action.MoveAction;
 import gazd.frontend.GuiManager;
 import java.util.List;

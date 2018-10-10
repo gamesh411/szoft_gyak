@@ -5,15 +5,14 @@
  */
 package gazd.controller.action;
 
-import gazd.backend.Board;
+import gazd.backend.domain.Board;
 import gazd.backend.state.DiceState;
-import gazd.backend.IGameAction;
 
 /**
  *
  * @author MetaPC
  */
-public class DiceStateAction implements IGameAction {
+public class DiceStateAction implements GameAction {
 
     Integer[] diceNumbers;
     Board board;

@@ -5,7 +5,7 @@
  */
 package gazd.backend.state;
 
-import gazd.backend.Player;
+import gazd.backend.domain.Player;
 
 /**
  *

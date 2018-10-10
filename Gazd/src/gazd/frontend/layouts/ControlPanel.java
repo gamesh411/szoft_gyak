@@ -5,7 +5,7 @@
  */
 package gazd.frontend.layouts;
 
-import gazd.backend.Player;
+import gazd.backend.domain.Player;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;

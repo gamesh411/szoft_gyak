@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.backend;
+package gazd.controller.action;
 
 /**
  *
- * @author mmeta
+ * @author endrefulop
  */
-public enum Piece {
-    RED, GREEN, BLUE, YELLOW, PURPLE
+public interface GameAction {
 
+    void execute();
 }

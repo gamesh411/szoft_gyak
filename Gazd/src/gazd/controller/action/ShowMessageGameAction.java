@@ -5,14 +5,13 @@
  */
 package gazd.controller.action;
 
-import gazd.backend.IGameAction;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author endrefulop
  */
-public class ShowMessageGameAction implements IGameAction {
+public class ShowMessageGameAction implements GameAction {
 
     private String message;
 

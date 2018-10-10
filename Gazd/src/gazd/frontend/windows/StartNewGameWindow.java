@@ -5,7 +5,7 @@
  */
 package gazd.frontend.windows;
 
-import gazd.backend.Piece;
+import gazd.backend.domain.component.Piece;
 import gazd.frontend.GuiManager;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;

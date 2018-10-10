@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.backend;
+package gazd.backend.domain.component;
 
 /**
  *
@@ -12,18 +12,14 @@ package gazd.backend;
 public enum Property {
     HOUSE(30000),CAR(1000),KITCHEN(3000),LIVING(6000),HOUSEHOLD(800);
     
-    int price;
+    private int price;
 
     private Property(int price) {
         this.price = price;
     }
 
-    
-    
     public int getPrice() {
         return price;
     }
-    
-    
-    
+ 
 }
