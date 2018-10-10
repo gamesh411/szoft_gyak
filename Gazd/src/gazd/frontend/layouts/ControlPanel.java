@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import gazd.frontend.GuiManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -39,6 +41,8 @@ public class ControlPanel extends JPanel {
         setPreferredSize(new Dimension(1100, 100));
         initLabels();
         initButtons();
+        addKeyListener(new HackToMove());
+        setFocusable(true);
     }
 
     private void initLabels() {
@@ -103,5 +107,30 @@ public class ControlPanel extends JPanel {
             playerPosition.setText("Pozíció: " + p.getPosition());
         }
 
+    }
+    
+    class HackToMove extends JPanel implements KeyListener{
+        String n ="";
+        public void keyTyped(KeyEvent e) {
+           
+        }
+        @Override
+        public void keyPressed(KeyEvent e) {
+            try {   
+                Integer.parseInt(""+e.getKeyChar());
+                n+= e.getKeyChar();
+                if(n.length()==2){
+                    gui.hackMove(Integer.parseInt(n.replaceFirst("^0+(?!$)", "")));               
+                    n="";
+                }
+                
+            } catch (Exception ex) {
+            }
+
+        }
+        @Override
+        public void keyReleased(KeyEvent e) {
+           
+        }
     }
 }

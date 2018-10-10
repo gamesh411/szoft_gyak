@@ -104,4 +104,8 @@ public final class GuiManager {
     public boolean isAnyPurchasAbleItem() {
         return control.isAnyPurchasableItem();
     }
+    
+    public void hackMove(int n){
+        control.hackMove(n);
+    }
 }

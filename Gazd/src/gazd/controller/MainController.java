@@ -8,6 +8,7 @@ package gazd.controller;
 import gazd.controller.action.NextPlayerGameAction;
 import gazd.controller.action.StepAction;
 import gazd.backend.*;
+import gazd.controller.action.MoveAction;
 import gazd.frontend.GuiManager;
 import java.util.List;
 import java.util.Set;
@@ -72,5 +73,11 @@ public class MainController {
 
     public boolean isAnyPurchasableItem() {
         return !board.getFields()[board.getCurrentPlayersPosition()].getProperties().isEmpty();
+    }
+    
+    public void hackMove(int n){
+        board.queueLateAction(new MoveAction(board, gui, n));
+        board.doTurn();
+        gui.update();
     }
 }
