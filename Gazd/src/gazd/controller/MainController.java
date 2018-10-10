@@ -11,6 +11,8 @@ import gazd.backend.domain.Player;
 import gazd.backend.domain.Board;
 import gazd.controller.action.NextPlayerGameAction;
 import gazd.controller.action.StepAction;
+import gazd.controller.action.CostAction;
+import gazd.controller.action.GameAction;
 import gazd.controller.action.MoveAction;
 import gazd.frontend.GuiManager;
 import java.util.List;
@@ -63,7 +65,11 @@ public class MainController {
     }
 
     public void buySelectedItem(Property selectedItem) {
+        GameAction purchase = new CostAction(board, selectedItem.getPrice());
+        board.queueImmediateAction(purchase);
+        board.doTurn();
         board.getCurrentPlayer().addProperty(selectedItem);
+        gui.update();
     }
 
     public Set<Property> getFieldItems() {
@@ -79,7 +85,7 @@ public class MainController {
     }
     
     public void hackMove(int n){
-        board.queueLateAction(new MoveAction(board, gui, n));
+        board.queueImmediateAction(new MoveAction(board, gui, n));
         board.doTurn();
         gui.update();
     }
