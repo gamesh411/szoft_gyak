@@ -5,12 +5,11 @@
  */
 package gazd.frontend.windows;
 
-import gazd.backend.Property;
+import gazd.backend.domain.component.Property;
 import gazd.frontend.GuiManager;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.swing.JButton;
