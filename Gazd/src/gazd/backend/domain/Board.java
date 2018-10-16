@@ -29,6 +29,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import javax.swing.JOptionPane;
 import gazd.controller.action.GameAction;
+import gazd.controller.action.InsuranceCheckAction;
 
 /**
  *
@@ -132,7 +133,8 @@ public class Board {
     }
 
     public void checkGame() {
-        if (currentPlayer.getProperties().size() == Property.values().length) {
+        if (currentPlayer.getProperties().size() == 
+                (currentPlayer.getProperties().contains(Property.INSURANCE) ? Property.values().length-1 :Property.values().length)) {
             JOptionPane.showMessageDialog(null, "Győztes: " + currentPlayer.getName());
             queueImmediateAction(() -> System.exit(0));
         }
@@ -202,6 +204,7 @@ public class Board {
             fields[2] = new InterestAction(Board.this, 7);
             fields[3] = new DrawCardAction(Board.this);
             fields[4] = new CostAction(Board.this, 100);
+            fields[6] = new InsuranceCheckAction(Board.this);
             fields[8] = new CostAction(Board.this, 20);
             fields[9] = new CostAction(Board.this, 500);
             fields[10] = new DrawCardAction(Board.this);
@@ -226,6 +229,7 @@ public class Board {
             fields[41] = new CostAction(Board.this, 200);
             Field[] f = Arrays.stream(fields).map(Field::new).toArray(Field[]::new);
 
+            f[6].setProperties(new HashSet<>(Arrays.asList(Property.INSURANCE)));
             f[11].setProperties(new HashSet<>(Arrays.asList(Property.KITCHEN, Property.LIVING)));
             f[19].setProperties(new HashSet<>(Arrays.asList(Property.HOUSE)));
             f[33].setProperties(new HashSet<>(Arrays.asList(Property.HOUSEHOLD)));
