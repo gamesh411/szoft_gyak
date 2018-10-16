@@ -134,7 +134,7 @@ public class Board {
 
     public void checkGame() {
         if (currentPlayer.getProperties().size() == 
-                (currentPlayer.getProperties().contains(Property.INSURANCE) ? Property.values().length-1 :Property.values().length)) {
+                (currentPlayer.getProperties().contains(Property.INSURANCE) ? Property.values().length :Property.values().length-1)) {
             JOptionPane.showMessageDialog(null, "Győztes: " + currentPlayer.getName());
             queueImmediateAction(() -> System.exit(0));
         }
