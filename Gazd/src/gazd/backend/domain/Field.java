@@ -3,21 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.backend;
+package gazd.backend.domain;
 
+import gazd.backend.domain.component.Property;
 import java.util.HashSet;
 import java.util.Set;
+import gazd.controller.action.GameAction;
 
 /**
  *
  * @author MetaPC
  */
 public class Field {
-    Set<Property> properties = new HashSet<>();
-    IGameAction action;
-    boolean interactive= false;
+    private Set<Property> properties = new HashSet<>();
+    private GameAction action;
+    private boolean interactive= false;
 
-    Field(IGameAction a){
+    public Field(GameAction a){
         this.action = a;
     }
     
@@ -30,7 +32,7 @@ public class Field {
         this.properties = properties;
     }
 
-    public IGameAction getAction() {
+    public GameAction getAction() {
         return action;
     }
     

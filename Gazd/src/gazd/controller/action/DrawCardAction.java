@@ -5,14 +5,13 @@
  */
 package gazd.controller.action;
 
-import gazd.backend.IGameAction;
-import gazd.backend.Board;
+import gazd.backend.domain.Board;
 
 /**
  *
  * @author endrefulop
  */
-public class DrawCardAction implements IGameAction {
+public class DrawCardAction implements GameAction {
 
     private final Board board;
 

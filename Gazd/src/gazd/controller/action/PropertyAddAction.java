@@ -1,13 +1,12 @@
 
 package gazd.controller.action;
 
-import gazd.backend.IGameAction;
-import gazd.backend.Board;
-import gazd.backend.Player;
-import gazd.backend.Property;
+import gazd.backend.domain.Board;
+import gazd.backend.domain.Player;
+import gazd.backend.domain.component.Property;
 import java.util.List;
 
-public class PropertyAddAction implements IGameAction {
+public class PropertyAddAction implements GameAction {
 
     private Board board;
     private List<Property> properties;

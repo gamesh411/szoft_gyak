@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gazd.backend;
+package gazd.backend.domain;
 
+import gazd.backend.domain.component.Piece;
+import gazd.backend.domain.component.Property;
 import gazd.backend.state.State;
 import gazd.backend.state.BasicState;
 import java.util.HashSet;
@@ -88,11 +90,15 @@ public class Player {
         this.state = state;
     }
 
-    boolean canStep() {
+    public boolean canStep() {
         return this.state.canStep(this, money);
     }
+    
+    public boolean canStepWithRolledValue(int dice){
+        return this.state.canStep(this, dice);
+    }
 
-    void decSkip() {
+    public void decSkip() {
         this.state.turn();
     }
 }

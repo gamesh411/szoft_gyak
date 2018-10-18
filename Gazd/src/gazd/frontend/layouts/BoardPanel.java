@@ -5,8 +5,8 @@
  */
 package gazd.frontend.layouts;
 
-import gazd.frontend.helper.DrawHelper;
-import gazd.backend.Player;
+import gazd.frontend.util.DrawHelper;
+import gazd.backend.domain.Player;
 import gazd.frontend.GuiManager;
 import java.awt.Dimension;
 import java.awt.FlowLayout;

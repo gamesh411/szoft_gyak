@@ -5,15 +5,14 @@
  */
 package gazd.controller.action;
 
-import gazd.backend.IGameAction;
-import gazd.backend.Board;
+import gazd.backend.domain.Board;
 import gazd.frontend.GuiManager;
 
 /**
  *
  * @author endrefulop
  */
-public class MoveAction implements IGameAction {
+public class MoveAction implements GameAction {
 
     private Board board;
     private int newPosition;

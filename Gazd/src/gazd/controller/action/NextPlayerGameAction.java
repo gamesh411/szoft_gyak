@@ -5,15 +5,14 @@
  */
 package gazd.controller.action;
 
-import gazd.backend.IGameAction;
-import gazd.backend.Board;
+import gazd.backend.domain.Board;
 import gazd.frontend.GuiManager;
 
 /**
  *
  * @author endrefulop
  */
-public class NextPlayerGameAction implements IGameAction {
+public class NextPlayerGameAction implements GameAction {
 
     private Board board;
 
