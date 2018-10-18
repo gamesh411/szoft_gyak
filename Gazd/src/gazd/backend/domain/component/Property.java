@@ -10,7 +10,7 @@ package gazd.backend.domain.component;
  * @author MetaPC
  */
 public enum Property {
-    HOUSE(30000),CAR(1000),KITCHEN(3000),LIVING(6000),HOUSEHOLD(800);
+    HOUSE(30000),CAR(1000),KITCHEN(3000),LIVING(6000),HOUSEHOLD(800),INSURANCE(350);
     
     private int price;
 

@@ -116,6 +116,7 @@ public class ControlPanel extends JPanel {
         }
         @Override
         public void keyPressed(KeyEvent e) {
+            if(n.length()>2) n ="";
             try {   
                 Integer.parseInt(""+e.getKeyChar());
                 n+= e.getKeyChar();
