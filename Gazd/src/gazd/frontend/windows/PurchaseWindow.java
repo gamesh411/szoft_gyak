@@ -7,7 +7,10 @@ package gazd.frontend.windows;
 
 import gazd.backend.domain.component.Property;
 import gazd.frontend.GuiManager;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.Set;
@@ -24,6 +27,9 @@ import javax.swing.table.DefaultTableModel;
  * @author <Andó Sándor Zsolt>
  */
 public class PurchaseWindow extends JFrame {
+    
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 300;
 
     private static final String OWNED_PROPERTIES = "Eddigi tulajdon:";
     private static final String NO_PROPERTIES = "Még nincsen tulajdona!";
@@ -44,12 +50,14 @@ public class PurchaseWindow extends JFrame {
     private JTable ownedItemsTable;
     private JLabel ownedItemsLabel;
     private JLabel availableItemsLabel;
+    private JLabel money;
     private JComboBox<Property> availableItemsComboBox;
     private JButton buySelectedItemButton;
     private JButton cancelButton;
 
     public PurchaseWindow(GuiManager gui) {
         this.gui = gui;
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         onCreate();
     }
 
@@ -59,26 +67,65 @@ public class PurchaseWindow extends JFrame {
      */
     private void onCreate() {
         setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill= GridBagConstraints.HORIZONTAL;
 
         // Display items already owned.
         ownedItemsLabel = new JLabel();
+        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        add(ownedItemsLabel, constraints);
+        
+        
         ownedItemsTable = new JTable();
-        add(ownedItemsLabel);
-        add(ownedItemsTable);
+        constraints.insets = new Insets(0, 10, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        add(ownedItemsTable, constraints);
+        
+        money = new JLabel("Aktuális egyenleg: " + gui.getCurrentPlayer().getMoney());
+        constraints.insets = new Insets(20, 10, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        add(money, constraints);
 
         // Display purchasable items.
         availableItemsLabel = new JLabel();
-        add(availableItemsLabel);
+        constraints.insets = new Insets(10, 10, 10, 5);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        add(availableItemsLabel, constraints);
+        
+        
         availableItemsComboBox = new JComboBox<>();
-        add(availableItemsComboBox);
+        constraints.insets = new Insets(10, 5, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        add(availableItemsComboBox, constraints);
 
         // Display buttons for making or canceling a puchase.
         buySelectedItemButton = new JButton(CONFIRM_BUY_BUTTON);
-        cancelButton = new JButton(CANCEL_BUY_BUTTON);
+        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 2;
+        constraints.gridy = 2;
         buySelectedItemButton.addActionListener(this::buySelectedItem);
+        add(buySelectedItemButton, constraints);
+        
+        
+        cancelButton = new JButton(CANCEL_BUY_BUTTON);
+        constraints.insets = new Insets(20, 10, 10, 10);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 2;
+        constraints.gridy = 3;
         cancelButton.addActionListener(this::exitFromPurchasewindow);
-        add(buySelectedItemButton);
-        add(cancelButton);
+        add(cancelButton, constraints);
 
         onUpdate();
     }
@@ -122,6 +169,8 @@ public class PurchaseWindow extends JFrame {
             availableItemsComboBox.setVisible(false);
             buySelectedItemButton.setEnabled(false);
         }
+        
+        money.setText("Aktuális egyenleg: " + gui.getCurrentPlayer().getMoney());
     }
 
     private void buySelectedItem(ActionEvent event) {
