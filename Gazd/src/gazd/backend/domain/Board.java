@@ -30,6 +30,7 @@ import java.util.stream.IntStream;
 import javax.swing.JOptionPane;
 import gazd.controller.action.GameAction;
 import gazd.controller.action.InsuranceCheckAction;
+import java.util.Set;
 
 /**
  *
@@ -133,8 +134,9 @@ public class Board {
     }
 
     public void checkGame() {
-        if (currentPlayer.getProperties().size() == 
-                (currentPlayer.getProperties().contains(Property.INSURANCE) ? Property.values().length :Property.values().length-1)) {
+        Set<Property> properties = currentPlayer.getProperties();
+        if (properties.size() == (properties.contains(Property.INSURANCE) ? Property.values().length :Property.values().length-1) &&
+                currentPlayer.getDebt() == 0) {
             JOptionPane.showMessageDialog(null, "Győztes: " + currentPlayer.getName());
             queueImmediateAction(() -> System.exit(0));
         }

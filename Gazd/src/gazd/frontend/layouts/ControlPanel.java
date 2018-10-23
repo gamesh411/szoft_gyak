@@ -6,6 +6,7 @@
 package gazd.frontend.layouts;
 
 import gazd.backend.domain.Player;
+import static gazd.controller.MainController.REPAY_AMOUNT;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,8 @@ public class ControlPanel extends JPanel {
     private JButton diceRollerButton;
     private JButton endRoundButton;
     private JButton purchaseButton;
+    private JButton loanButton;
+    private JButton repayButton;
 
     private GuiManager gui;
 
@@ -67,6 +70,14 @@ public class ControlPanel extends JPanel {
         purchaseButton.addActionListener(this::doPurchase);
         purchaseButton.setEnabled(false);
         add(purchaseButton);
+        loanButton = new JButton("Hitel felvétel");
+        loanButton.addActionListener(this::takeLoan);
+        loanButton.setEnabled(false);
+        add(loanButton);
+        repayButton = new JButton("Törleszt 5000€");
+        repayButton.addActionListener(this::repay);
+        repayButton.setEnabled(false);
+        add(repayButton);
     }
 
     private void doRoll(ActionEvent event) {
@@ -83,6 +94,14 @@ public class ControlPanel extends JPanel {
 
     private void doPurchase(ActionEvent event) {
         gui.doPurchase();
+    }
+    
+    private void takeLoan(ActionEvent event) {
+        gui.takeLoan();
+    }
+    
+    private void repay(ActionEvent event) {
+        gui.repay(REPAY_AMOUNT);
     }
 
     public JLabel getCurrentPlayerPieceLabel() {
@@ -102,6 +121,8 @@ public class ControlPanel extends JPanel {
         if (p != null) {
             diceRollerButton.setEnabled(!endRoundButton.isEnabled());
             purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
+            loanButton.setEnabled(gui.canLoan());
+            repayButton.setEnabled(gui.canRepay());
             playerMoney.setText("Pénz: " + p.getMoney());
             playerPiece.setText("Név: " + p.getName() + " Szín:" + p.getPiece());
             playerPosition.setText("Pozíció: " + p.getPosition());

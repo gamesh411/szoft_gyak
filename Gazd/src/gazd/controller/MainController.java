@@ -14,6 +14,7 @@ import gazd.controller.action.StepAction;
 import gazd.controller.action.CostAction;
 import gazd.controller.action.GameAction;
 import gazd.controller.action.MoveAction;
+import gazd.controller.action.ShowMessageGameAction;
 import gazd.frontend.GuiManager;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,7 @@ public class MainController {
 
     private Board board;
     private GuiManager gui;
+    public final static int REPAY_AMOUNT = 5000;
 
     public MainController(GuiManager gui) {
         this.gui = gui;
@@ -88,5 +90,33 @@ public class MainController {
         board.queueImmediateAction(new MoveAction(board, gui, n));
         board.doTurn();
         gui.update();
+    }
+
+    public boolean canLoan() {
+        int pos = board.getCurrentPlayersPosition();
+        return (pos == 19 || pos == 39) && !board.getCurrentPlayer().getProperties().contains(Property.HOUSE);
+    }
+
+    public boolean canRepay() {
+        return board.getCurrentPlayer().getDebt() > 0 && board.getCurrentPlayer().getMoney() >= REPAY_AMOUNT;
+    }
+
+    public void takeLoan() {
+        board.getCurrentPlayer().addProperty(Property.HOUSE);
+        board.getCurrentPlayer().setDebt(Property.HOUSE.getPrice());
+        gui.update();
+    }
+
+    public void repay(int sum) {
+        Player p = board.getCurrentPlayer();
+        GameAction purchase = new CostAction(board, sum);
+        board.queueImmediateAction(purchase);
+        p.setDebt(p.getDebt()-sum);
+        if(p.getDebt()==0){
+            board.queueLateAction(new ShowMessageGameAction("Hitel sikeresn visszafizetve!"));
+        }
+        board.doTurn();
+        gui.update();
+        board.checkGame();
     }
 }

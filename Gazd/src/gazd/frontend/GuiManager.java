@@ -105,4 +105,20 @@ public final class GuiManager {
     public void hackMove(int n){
         control.hackMove(n);
     }
+
+    public boolean canLoan() {
+        return control.canLoan();
+    }
+
+    public boolean canRepay() {
+        return control.canRepay();
+    }
+
+    public void takeLoan() {
+        control.takeLoan();
+    }
+
+    public void repay(int sum) {
+        control.repay(sum);
+    }
 }
