@@ -28,6 +28,8 @@ public class MainController {
     private Board board;
     private GuiManager gui;
     public final static int REPAY_AMOUNT = 5000;
+    public final static int LOAN = 20000;
+    public static final int OWN_RESOURCE = 15000; 
 
     public MainController(GuiManager gui) {
         this.gui = gui;
@@ -94,7 +96,8 @@ public class MainController {
 
     public boolean canLoan() {
         int pos = board.getCurrentPlayersPosition();
-        return (pos == 19 || pos == 39) && !board.getCurrentPlayer().getProperties().contains(Property.HOUSE);
+        Player p = board.getCurrentPlayer();
+        return (pos == 19 || pos == 39) && !p.getProperties().contains(Property.HOUSE) && p.getMoney() >= 15000;
     }
 
     public boolean canRepay() {
@@ -102,8 +105,11 @@ public class MainController {
     }
 
     public void takeLoan() {
+        GameAction purchase = new CostAction(board, OWN_RESOURCE);
+        board.queueImmediateAction(purchase);
+        board.doTurn();
         board.getCurrentPlayer().addProperty(Property.HOUSE);
-        board.getCurrentPlayer().setDebt(Property.HOUSE.getPrice());
+        board.getCurrentPlayer().setDebt(LOAN);
         gui.update();
     }
 
