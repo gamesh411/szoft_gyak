@@ -24,6 +24,7 @@ public class Player {
     private Piece piece;
     private State state;
     private Set<Property> properties; 
+    private int debt;
 
     public Set<Property> getProperties() {
         return properties;
@@ -41,9 +42,10 @@ public class Player {
     public Player(String name, Piece piece) {
         this.name = name;
         this.piece = piece;
-        money = 17100;
+        money = 50000;
         state = new BasicState();
         properties = new HashSet<>();
+        debt = 0;
     }
 
     public void spendMoney(int cost) {
@@ -100,5 +102,13 @@ public class Player {
 
     public void decSkip() {
         this.state.turn();
+    }
+    
+    public int getDebt(){
+        return debt;
+    }
+
+    public void setDebt(int debt) {
+        this.debt = debt;
     }
 }
