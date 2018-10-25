@@ -7,10 +7,12 @@ package gazd.frontend.windows;
 
 import gazd.backend.domain.component.Property;
 import gazd.frontend.GuiManager;
+import gazd.frontend.util.ScreenConstants;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.Set;
@@ -28,8 +30,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PurchaseWindow extends JFrame {
     
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 300;
+    private static final int WIDTH = ScreenConstants.PURCHASE_WINDOW_WIDTH.getValue();
+    private static final int HEIGHT = ScreenConstants.PURCHASE_WINDOW_HEIGHT.getValue();
+    private static final int ROW_HEIGHT = ScreenConstants.ROW_HEIGHT.getValue();
 
     private static final String OWNED_PROPERTIES = "Eddigi tulajdon:";
     private static final String NO_PROPERTIES = "Még nincsen tulajdona!";
@@ -80,6 +83,7 @@ public class PurchaseWindow extends JFrame {
         
         
         ownedItemsTable = new JTable();
+        ownedItemsTable.setRowHeight(ROW_HEIGHT);
         constraints.insets = new Insets(0, 10, 10, 10);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
