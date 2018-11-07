@@ -40,44 +40,48 @@ public class ControlPanel extends JPanel {
     }
 
     private void init() {
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 70, 10));
         setLayout(new FlowLayout());
+        add(infoPanel);
+        add(buttonPanel);
         setPreferredSize(new Dimension(1100, 100));
-        initLabels();
-        initButtons();
+        initLabels(infoPanel);
+        initButtons(buttonPanel);
         addKeyListener(new HackToMove());
         setFocusable(true);
     }
 
-    private void initLabels() {
+    private void initLabels(JPanel infoPanel) {
         playerPiece = new JLabel();
         playerMoney = new JLabel();
         playerPosition = new JLabel();
-        add(playerPiece);
-        add(playerMoney);
-        add(playerPosition);
+        infoPanel.add(playerPiece);
+        infoPanel.add(playerMoney);
+        infoPanel.add(playerPosition);
     }
 
-    private void initButtons() {
+    private void initButtons(JPanel buttonPanel) {
         diceRollerButton = new JButton("Dobás");
         diceRollerButton.addActionListener(this::doRoll);
-        add(diceRollerButton);
+        buttonPanel.add(diceRollerButton);
         diceRollerButton.setEnabled(false);
         endRoundButton = new JButton("Kör vége");
         endRoundButton.addActionListener(this::endRound);
         endRoundButton.setEnabled(false);
-        add(endRoundButton);
+        buttonPanel.add(endRoundButton);
         purchaseButton = new JButton("Vásárlás");
         purchaseButton.addActionListener(this::doPurchase);
         purchaseButton.setEnabled(false);
-        add(purchaseButton);
+        buttonPanel.add(purchaseButton);
         loanButton = new JButton("Hitel felvétel");
         loanButton.addActionListener(this::takeLoan);
         loanButton.setEnabled(false);
-        add(loanButton);
+        buttonPanel.add(loanButton);
         repayButton = new JButton("Törleszt 5000€");
         repayButton.addActionListener(this::repay);
         repayButton.setEnabled(false);
-        add(repayButton);
+        buttonPanel.add(repayButton);
     }
 
     private void doRoll(ActionEvent event) {
@@ -123,8 +127,8 @@ public class ControlPanel extends JPanel {
             purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
             loanButton.setEnabled(gui.canLoan());
             repayButton.setEnabled(gui.canRepay());
-            playerMoney.setText("Pénz: " + p.getMoney());
-            playerPiece.setText("Név: " + p.getName() + " Szín:" + p.getPiece());
+            playerMoney.setText("Pénz: " + p.getMoney() + " €");
+            playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
             playerPosition.setText("Pozíció: " + p.getPosition());
         }
 

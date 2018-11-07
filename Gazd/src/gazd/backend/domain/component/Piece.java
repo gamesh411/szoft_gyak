@@ -10,6 +10,16 @@ package gazd.backend.domain.component;
  * @author mmeta
  */
 public enum Piece {
-    RED, GREEN, BLUE, YELLOW, PURPLE
+    RED("piros"), GREEN("zöld"), BLUE("kék"), YELLOW("sárga"), PURPLE("lila");
 
+    private String huColor;
+
+    private Piece(String huColor) {
+        this.huColor = huColor;
+    }
+
+    @Override
+    public String toString() {
+        return huColor;
+    }
 }

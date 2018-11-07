@@ -14,7 +14,7 @@ import java.awt.Toolkit;
 public enum ScreenConstants {
     SCREEN_WIDTH((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()),
     SCREEN_HEIGHT((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()),
-    PURCHASE_WINDOW_WIDTH((int) (SCREEN_WIDTH.getValue() / 2.4)),
+    PURCHASE_WINDOW_WIDTH((int) (SCREEN_WIDTH.getValue() / 2.2)),
     PURCHASE_WINDOW_HEIGHT((int) (SCREEN_HEIGHT.getValue() / 3)),
     FONT_SIZE((int) (SCREEN_WIDTH.getValue() / 100)),
     ROW_HEIGHT(FONT_SIZE.getValue() + 10),
