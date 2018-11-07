@@ -29,6 +29,7 @@ public class ControlPanel extends JPanel {
     private JButton diceRollerButton;
     private JButton endRoundButton;
     private JButton purchaseButton;
+    private JButton propertyButton;
     private JButton loanButton;
     private JButton repayButton;
 
@@ -74,6 +75,10 @@ public class ControlPanel extends JPanel {
         purchaseButton.addActionListener(this::doPurchase);
         purchaseButton.setEnabled(false);
         buttonPanel.add(purchaseButton);
+        propertyButton = new JButton("Tulajdonaim");
+        propertyButton.addActionListener(this::viewProperties);
+        propertyButton.setEnabled(false);
+        buttonPanel.add(propertyButton);
         loanButton = new JButton("Hitel felvétel");
         loanButton.addActionListener(this::takeLoan);
         loanButton.setEnabled(false);
@@ -98,6 +103,12 @@ public class ControlPanel extends JPanel {
 
     private void doPurchase(ActionEvent event) {
         gui.doPurchase();
+        
+    }
+    
+    private void viewProperties(ActionEvent event) {
+        gui.viewProperties();
+        
     }
     
     private void takeLoan(ActionEvent event) {
@@ -123,6 +134,7 @@ public class ControlPanel extends JPanel {
     public void update() {
         Player p = gui.getCurrentPlayer();
         if (p != null) {
+            propertyButton.setEnabled(true);
             diceRollerButton.setEnabled(!endRoundButton.isEnabled());
             purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
             loanButton.setEnabled(gui.canLoan());

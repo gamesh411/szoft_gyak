@@ -13,6 +13,7 @@ import hu.elte.gazdapp.frontend.util.ScreenConstants;
 import hu.elte.gazdapp.frontend.windows.StartNewGameWindow;
 import hu.elte.gazdapp.frontend.windows.PurchaseWindow;
 import hu.elte.gazdapp.frontend.windows.GameWindow;
+import hu.elte.gazdapp.frontend.windows.PropertyWindow;
 import java.awt.Font;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class GuiManager {
     private GameWindow screen;
     private StartNewGameWindow initGameScreen;
     private PurchaseWindow purchaseScreen;
+    private PropertyWindow propertyScreen;
     private MainController control;
 
     private final int TEXT_SIZE = ScreenConstants.FONT_SIZE.getValue();
@@ -96,6 +98,12 @@ public class GuiManager {
         purchaseScreen = new PurchaseWindow(this);
         purchaseScreen.pack();
         purchaseScreen.setVisible(true);
+    }
+    
+     public void viewProperties() {
+        propertyScreen = new PropertyWindow(this);
+        propertyScreen.pack();
+        propertyScreen.setVisible(true);
     }
 
     public List<Property> getAllItems() {

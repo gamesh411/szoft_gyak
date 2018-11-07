@@ -16,6 +16,8 @@ public enum ScreenConstants {
     SCREEN_HEIGHT((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()),
     PURCHASE_WINDOW_WIDTH((int) (SCREEN_WIDTH.getValue() / 2.2)),
     PURCHASE_WINDOW_HEIGHT((int) (SCREEN_HEIGHT.getValue() / 3)),
+    PROPERTY_WINDOW_WIDTH((int) (SCREEN_WIDTH.getValue() / 4.4)),
+    PROPERTY_WINDOW_HEIGHT((int) (SCREEN_HEIGHT.getValue() / 4)),
     FONT_SIZE((int) (SCREEN_WIDTH.getValue() / 100)),
     ROW_HEIGHT(FONT_SIZE.getValue() + 10),
     BOARD_PANEL_HEIGHT(SCREEN_HEIGHT.getValue() - 300);

@@ -85,7 +85,11 @@ public class MainController {
     }
 
     public boolean isAnyPurchasableItem() {
-        return !board.getFields()[board.getCurrentPlayersPosition()].getProperties().isEmpty();
+        Set<Property> p = board.getFields()[board.getCurrentPlayersPosition()].getProperties();
+        if(p.contains(Property.HOUSEHOLD) || p.contains(Property.KITCHEN) || p.contains(Property.LIVING)){
+            return board.getCurrentPlayer().getProperties().contains(Property.HOUSE);
+        }
+        return !p.isEmpty();
     }
     
     public void hackMove(int n){
