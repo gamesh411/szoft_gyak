@@ -64,9 +64,12 @@ public class BoardTest {
     public void testGetPlayers() {
         System.out.println("getPlayers");
         Board board = new Board();
-        List<Player> expResult = Arrays.asList(new Player[]{new Player("Jill", Piece.RED), new Player("Joe", Piece.BLUE)});
-        board.addPlayer(new Player("Jill", Piece.RED));
-        board.addPlayer(new Player("Joe", Piece.BLUE));
+        Player player1 = new Player("Jill", Piece.RED);
+        Player player2 = new Player("Joe", Piece.BLUE);
+        
+        List<Player> expResult = Arrays.asList(player1, player2);
+        board.addPlayer(player1);
+        board.addPlayer(player2);
         List<Player> result = board.getPlayers();
         assertArrayEquals(expResult.toArray(), result.toArray());
     }
