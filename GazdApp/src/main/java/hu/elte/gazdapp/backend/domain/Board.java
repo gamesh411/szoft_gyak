@@ -181,11 +181,11 @@ public class Board {
             cards.add(new Card(new RelativeMoveAction(Board.this, null, 2), "Lépj előre 2 mezőt."));
             cards.add(new Card(new RelativeMoveAction(Board.this, null, -3), "Lépj vissza 3 mezőt."));
             cards.add(new Card(new RelativeMoveAction(Board.this, null, -3), "Lépj vissza 3 mezőt."));
-            cards.add(new Card(new PropertyAddAction(Board.this, Arrays.asList(new Property[]{Property.HOUSEHOLD})),
+            cards.add(new Card(new PropertyAddAction(Board.this, Property.HOUSEHOLD),
                     "Ajándékul háztarrtási bútorokat kaptál ajándékba."));
-            cards.add(new Card(new PropertyAddAction(Board.this, Arrays.asList(new Property[]{Property.KITCHEN})),
+            cards.add(new Card(new PropertyAddAction(Board.this, Property.KITCHEN),
                     "Ajándékul konyhai bútort kaptál ajándékba."));
-            cards.add(new Card(new PropertyAddAction(Board.this, Arrays.asList(new Property[]{Property.LIVING})),
+            cards.add(new Card(new PropertyAddAction(Board.this, Property.LIVING),
                     "Ajándékul szobabútort kaptál ajándékba."));
 
             Collections.shuffle(cards);
