@@ -50,7 +50,6 @@ public class BoardTest {
      */
     @Test
     public void testAddPlayer() {
-        System.out.println("addPlayer");
         Player player = new Player("Player1", Piece.RED);
         Board board = new Board();
         board.addPlayer(player);
@@ -62,7 +61,6 @@ public class BoardTest {
      */
     @Test
     public void testGetPlayers() {
-        System.out.println("getPlayers");
         Board board = new Board();
         Player player1 = new Player("Jill", Piece.RED);
         Player player2 = new Player("Joe", Piece.BLUE);
@@ -79,7 +77,6 @@ public class BoardTest {
      */
     @Test
     public void testSetPlayers() {
-        System.out.println("setPlayers");
         List<Player> players = Arrays.asList(new Player[]{new Player("Alaric", Piece.RED), new Player("Rose", Piece.PURPLE)});
         Board board = new Board();
         board.setPlayers(players);
@@ -91,7 +88,6 @@ public class BoardTest {
      */
     @Test
     public void testGetAndSetCurrentPlayer() {
-        System.out.println("getCurrentPlayer");
         Board board = new Board();
 
         Player player1 = new Player("Wendy", Piece.GREEN);
@@ -112,7 +108,6 @@ public class BoardTest {
      */
     @Test
     public void testStart() {
-        System.out.println("start");
         Board board = new Board();
         board.addPlayer(new Player("Peter", Piece.RED));
         board.addPlayer(new Player("Jane", Piece.BLUE));
@@ -126,7 +121,6 @@ public class BoardTest {
      */
     @Test
     public void testActionHandling() {
-        System.out.println("queueLateAction");
         GuiManager gui = new GuiManager();
         Board board = new Board();
         GameAction moveAction = new MoveAction(board, gui, 12);
@@ -150,7 +144,6 @@ public class BoardTest {
      */
     @Test
     public void testStep() {
-        System.out.println("step");
         Board board = new Board();
         Player currentPlayer = new Player("Zoe", Piece.GREEN);
         board.addPlayer(currentPlayer);
@@ -165,7 +158,6 @@ public class BoardTest {
      */
     @Test
     public void testStepOn() {
-        System.out.println("stepOn");
         int newPosition = 15;
         Board instance = new Board();
         Player currentPlayer = new Player("Jan", Piece.YELLOW);
@@ -181,7 +173,6 @@ public class BoardTest {
      */
     @Test
     public void testNextPlayer() {
-        System.out.println("nextPlayer");
         Board instance = new Board();
         Player currentPlayer = new Player("Manfred", Piece.PURPLE);
         Player nextPlayer = new Player("Laszlo", Piece.RED);
