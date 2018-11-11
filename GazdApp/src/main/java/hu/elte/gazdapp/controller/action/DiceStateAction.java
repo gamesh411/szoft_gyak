@@ -6,7 +6,9 @@
 package hu.elte.gazdapp.controller.action;
 
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
 import hu.elte.gazdapp.backend.state.DiceState;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -15,15 +17,15 @@ import hu.elte.gazdapp.backend.state.DiceState;
 public class DiceStateAction implements GameAction {
 
     Integer[] diceNumbers;
-    Board board;
+    BoardInterface board;
 
-    public DiceStateAction(Board board, Integer... diceNumbers) {
+    public DiceStateAction(BoardInterface board, Integer... diceNumbers) {
         this.diceNumbers = diceNumbers;
         this.board = board;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws RemoteException {
         board.getCurrentPlayer().setState(new DiceState(diceNumbers));
 
     }

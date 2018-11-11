@@ -89,8 +89,13 @@ public class GuiManager {
         control.addPlayer(playerName, color);
     }
 
-    public void startGame() {
-        control.start();
+     public void startServer() {
+        control.startServer();
+        screen.repaint();
+    }
+    
+    public void startClient() {
+        control.startClient();
         screen.repaint();
     }
 

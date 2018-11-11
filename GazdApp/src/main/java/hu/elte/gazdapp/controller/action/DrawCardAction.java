@@ -6,6 +6,8 @@
 package hu.elte.gazdapp.controller.action;
 
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -13,14 +15,14 @@ import hu.elte.gazdapp.backend.domain.Board;
  */
 public class DrawCardAction implements GameAction {
 
-    private final Board board;
+    private final BoardInterface board;
 
-    public DrawCardAction(Board board) {
+    public DrawCardAction(BoardInterface board) {
         this.board = board;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws RemoteException {
         board.drawCard();
     }
 

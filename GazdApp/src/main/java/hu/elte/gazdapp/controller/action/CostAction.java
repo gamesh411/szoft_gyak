@@ -6,6 +6,8 @@
 package hu.elte.gazdapp.controller.action;
 
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -13,16 +15,16 @@ import hu.elte.gazdapp.backend.domain.Board;
  */
 public class CostAction implements GameAction {
 
-    private Board board;
+    private BoardInterface board;
     private int cost;
 
-    public CostAction(Board board, int cost) {
+    public CostAction(BoardInterface board, int cost) {
         this.board = board;
         this.cost = cost;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws RemoteException {
         board.getCurrentPlayer().spendMoney(cost);
     }
 
