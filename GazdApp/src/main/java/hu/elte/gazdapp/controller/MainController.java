@@ -77,6 +77,7 @@ public class MainController {
     }
 
     public Set<Property> getFieldItems() {
+        // @Sanyi: Can't test this code, see Law of Demeter to fix
         return board.getFields()[board.getCurrentPlayersPosition()].getProperties();
     }
 
@@ -85,6 +86,7 @@ public class MainController {
     }
 
     public boolean isAnyPurchasableItem() {
+        // @Sanyi: Can't test this code, see Law of Demeter to fix
         Set<Property> p = board.getFields()[board.getCurrentPlayersPosition()].getProperties();
         if(p.contains(Property.HOUSEHOLD) || p.contains(Property.KITCHEN) || p.contains(Property.LIVING)){
             return board.getCurrentPlayer().getProperties().contains(Property.HOUSE);
