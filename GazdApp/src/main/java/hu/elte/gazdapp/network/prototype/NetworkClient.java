@@ -22,7 +22,7 @@ public class NetworkClient implements Runnable, AutoCloseable {
 
 	public NetworkClient() throws IOException {
 		logInfo("Connecting to localhost:9090...");
-		server = new Socket("localhost", 9090);
+		server = new Socket("127.0.0.1", 9090);
 		logInfo("Connected!");
 		serverConnection = new ObjectSocketConnection(server, true);
 	}
