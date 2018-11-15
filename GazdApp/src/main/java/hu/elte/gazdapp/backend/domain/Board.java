@@ -146,6 +146,10 @@ public class Board {
         return currentPlayer.getPosition();
     }
 
+    public Set<Property> getPropertiesOfField(int currentPlayersPosition) {
+        return fields[currentPlayersPosition].getProperties();
+    }
+
     private final class CardFactory {
 
         private List<Card> cards = new LinkedList<>();

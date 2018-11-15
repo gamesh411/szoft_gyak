@@ -77,8 +77,7 @@ public class MainController {
     }
 
     public Set<Property> getFieldItems() {
-        // @Sanyi: Can't test this code, see Law of Demeter to fix
-        return board.getFields()[board.getCurrentPlayersPosition()].getProperties();
+        return board.getPropertiesOfField(board.getCurrentPlayersPosition());
     }
 
     public void checkGame() {
@@ -86,9 +85,9 @@ public class MainController {
     }
 
     public boolean isAnyPurchasableItem() {
-        // @Sanyi: Can't test this code, see Law of Demeter to fix
-        Set<Property> p = board.getFields()[board.getCurrentPlayersPosition()].getProperties();
+        Set<Property> p = getFieldItems();
         if(p.contains(Property.HOUSEHOLD) || p.contains(Property.KITCHEN) || p.contains(Property.LIVING)){
+            //Law of Demeter
             return board.getCurrentPlayer().getProperties().contains(Property.HOUSE);
         }
         return !p.isEmpty();

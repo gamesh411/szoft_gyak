@@ -13,11 +13,15 @@ import hu.elte.gazdapp.controller.action.CostAction;
 import hu.elte.gazdapp.controller.action.GameAction;
 import hu.elte.gazdapp.controller.action.MoveAction;
 import hu.elte.gazdapp.controller.action.NextPlayerGameAction;
+import hu.elte.gazdapp.controller.action.ShowMessageGameAction;
 import hu.elte.gazdapp.controller.action.StepAction;
 
 import hu.elte.gazdapp.frontend.GuiManager;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -180,20 +184,24 @@ public class MainControllerTest {
         Assert.assertTrue(player.getProperties().contains(Property.KITCHEN));
     }
 
-//    /**
-//     * Test of getFieldItems method, of class MainController.
-//     */
-//    @Test
-//    public void testGetFieldItems() {
-//        System.out.println("getFieldItems");
-//        MainController instance = null;
-//        Set<Property> expResult = null;
-//        Set<Property> result = instance.getFieldItems();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
+    /**
+     * Test of getFieldItems method, of class MainController.
+     */
+    @Test
+    public void testGetFieldItems() {
+        //GIVEN
+        int pos = 19;
+        Set<Property> properties = new HashSet<>(Arrays.asList(Property.HOUSE));
+        BDDMockito.given(board.getPropertiesOfField(BDDMockito.anyInt())).willReturn(properties);
+        BDDMockito.given(board.getCurrentPlayersPosition()).willReturn(pos);
+        //WHEN
+        Set<Property> result = underTest.getFieldItems();
+        //THEN
+        BDDMockito.verify(board).getPropertiesOfField(BDDMockito.anyInt());
+        BDDMockito.verify(board).getCurrentPlayersPosition();
+        Assert.assertEquals(properties, result);
+    }
+
     /**
      * Test of checkGame method, of class MainController.
      */
@@ -381,16 +389,51 @@ public class MainControllerTest {
     }
 
     /**
-//     * Test of repay method, of class MainController.
-//     */
-//    @Test
-//    public void testRepay() {
-//        System.out.println("repay");
-//        int sum = 0;
-//        MainController instance = null;
-//        instance.repay(sum);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+     * Test of repay method, of class MainController.
+     */
+    @Test
+    public void testRepayAllDebt() {
+        //GIVEN
+        Player player = new Player("currentPlayer", Piece.RED);
+        player.setDebt(10);
+        BDDMockito.given(board.getCurrentPlayer()).willReturn(player);
+        //WHEN
+        underTest.repay(10);
+        //THEN
+        InOrder inorder = BDDMockito.inOrder(board, gui);
+        ArgumentCaptor<GameAction> content = ArgumentCaptor.forClass(CostAction.class);
+        ArgumentCaptor<ShowMessageGameAction> messageCaptor = ArgumentCaptor.forClass(ShowMessageGameAction.class);
+        
+        inorder.verify(board).queueImmediateAction(content.capture());
+        inorder.verify(board).queueLateAction(messageCaptor.capture());
+        inorder.verify(board).doTurn();
+        inorder.verify(gui).update();
+        inorder.verify(board).checkGame();
+        
+        Assert.assertEquals(0, player.getDebt());
+    }
+    
+    /**
+     * Test of repay method, of class MainController.
+     */
+    @Test
+    public void testRepayDebt() {
+        //GIVEN
+        Player player = new Player("currentPlayer", Piece.RED);
+        player.setDebt(11);
+        BDDMockito.given(board.getCurrentPlayer()).willReturn(player);
+        //WHEN
+        underTest.repay(10);
+        //THEN
+        InOrder inorder = BDDMockito.inOrder(board, gui);
+        ArgumentCaptor<GameAction> content = ArgumentCaptor.forClass(CostAction.class);
+        
+        inorder.verify(board).queueImmediateAction(content.capture());
+        inorder.verify(board).doTurn();
+        inorder.verify(gui).update();
+        inorder.verify(board).checkGame();
+        
+        Assert.assertEquals(1, player.getDebt());
+    }
     
 }
