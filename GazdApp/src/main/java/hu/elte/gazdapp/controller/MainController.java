@@ -49,6 +49,7 @@ public class MainController  {
     Registry registry;
     
     MulticastSocket communicationSocket;
+    InetAddress group;
 
     public MainController(GuiManager gui) {
         this.gui = gui;
@@ -71,20 +72,12 @@ public class MainController  {
     	byte endBuf[] = "end".getBytes();
     	DatagramPacket endPacket = new DatagramPacket(endBuf, endBuf.length);
     	try {
-			communicationSocket.send(endPacket);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	
-        if (isServer) {
-        	try {
-				updateThread.join(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
+            communicationSocket.send(endPacket);
+            updateThread.join(1000);
+	} catch (IOException | InterruptedException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+	}
     }
 
     public void startServer() {
@@ -101,15 +94,11 @@ public class MainController  {
             
             
             isServer = true;
-            communicationSocket = new MulticastSocket(54321);
-            InetAddress group = InetAddress.getByName("234.234.234.234");
-            communicationSocket.joinGroup(group);            
+            startUpdateThread();
             
-        } catch (RemoteException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-        	Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-		}
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void startClient() {
@@ -123,16 +112,37 @@ public class MainController  {
             gui.update();
             
             isServer = false;
-            communicationSocket = new MulticastSocket(54321);
-            InetAddress group = InetAddress.getByName("234.234.234.234");
-            communicationSocket.joinGroup(group);
+            startUpdateThread();
             
-            updateThread = new Thread(() -> {
+        } catch (Exception ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+    public void updateClients() {
+    	byte updateMsg[] = "update".getBytes();
+    	try {
+            DatagramPacket updatePacket = new DatagramPacket(updateMsg, updateMsg.length, group, 54321 );
+            communicationSocket.send(updatePacket);
+	} catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+	}
+    }
+    
+    public void startUpdateThread(){
+        try {
+            communicationSocket = new MulticastSocket(54321);
+            group = InetAddress.getByName("234.234.234.234");
+            communicationSocket.joinGroup(group);
+        } catch (IOException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        updateThread = new Thread(() -> {
                 try {
 	            	byte[] buf = new byte[256];
 	            	while (gameInProgress) {
-	                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
-					    communicationSocket.receive(packet);	
+	                    DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName("234.234.234.234"), 54321 );
+                            communicationSocket.receive(packet);	
 	                    String received = new String(
 	                      packet.getData(), 0, packet.getLength());
 	                    if ("update".equals(received)) {
@@ -146,23 +156,6 @@ public class MainController  {
 				}
             });
             updateThread.start();
-            
-        } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-        
-    public void updateClients() {
-    	if (!isServer) {
-    		return;
-    	}
-    	byte updateMsg[] = "update".getBytes();
-    	DatagramPacket updatePacket = new DatagramPacket(updateMsg, updateMsg.length);
-    	try {
-			communicationSocket.send(updatePacket);
-		} catch (IOException ex) {
-			Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-		}
     }
 
     public void onRoll() {
