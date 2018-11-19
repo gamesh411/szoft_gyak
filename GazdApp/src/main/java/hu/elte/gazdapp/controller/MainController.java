@@ -141,7 +141,7 @@ public class MainController  {
                 try {
 	            	byte[] buf = new byte[256];
 	            	while (gameInProgress) {
-	                    DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName("234.234.234.234"), 54321 );
+	                    DatagramPacket packet = new DatagramPacket(buf, buf.length, group, 54321 );
                             communicationSocket.receive(packet);	
 	                    String received = new String(
 	                      packet.getData(), 0, packet.getLength());
