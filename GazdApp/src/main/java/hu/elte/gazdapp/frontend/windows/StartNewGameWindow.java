@@ -30,7 +30,7 @@ public class StartNewGameWindow extends JFrame {
     private JComboBox<Piece> colorsComboBox;
     private JLabel playerNameTFLabel;
     private JTextField playerNameTextField;
-    private JButton addPlayerButton, finishNewGameInitializationButton;
+    private JButton addPlayerButton, finishNewGameInitializationButton, clientButton;
 
     public StartNewGameWindow(GuiManager gui) {
         this.gui = gui;
@@ -43,16 +43,19 @@ public class StartNewGameWindow extends JFrame {
         playerNameTFLabel = new JLabel("Játékos neve: ");
         playerNameTextField = new JTextField("", 30);
         addPlayerButton = new JButton("Játékos hozzáadása");
-        finishNewGameInitializationButton = new JButton("Játék kezdése");
-
+        finishNewGameInitializationButton = new JButton("Szerver start");
+        clientButton = new JButton("Kliens start");
+        
         addPlayerButton.addActionListener(this::addPlayer);
-        finishNewGameInitializationButton.addActionListener(this::closeWindowAndStartGame);
+        finishNewGameInitializationButton.addActionListener(this::closeWindowAndStartServer);
+        clientButton.addActionListener(this::closeWindowAndStartClient);
 
         add(colorsComboBox);
         add(playerNameTFLabel);
         add(playerNameTextField);
         add(addPlayerButton);
         add(finishNewGameInitializationButton);
+        add(clientButton);
     }
 
     private void addPlayer(ActionEvent e) {
@@ -70,8 +73,13 @@ public class StartNewGameWindow extends JFrame {
         }
     }
 
-    private void closeWindowAndStartGame(ActionEvent e) {
+    private void closeWindowAndStartServer(ActionEvent e) {
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-        gui.startGame();
+        gui.startServer();
+    }
+    
+     private void closeWindowAndStartClient (ActionEvent e) {
+        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        gui.startClient();
     }
 }

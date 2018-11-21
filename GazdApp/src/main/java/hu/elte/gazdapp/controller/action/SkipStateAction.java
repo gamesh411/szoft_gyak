@@ -6,7 +6,9 @@
 package hu.elte.gazdapp.controller.action;
 
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
 import hu.elte.gazdapp.backend.state.SkipState;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -15,10 +17,10 @@ import hu.elte.gazdapp.backend.state.SkipState;
 public class SkipStateAction implements GameAction {
 
     int skipTurns;
-    Board board;
+    BoardInterface board;
     int cost;
 
-    public SkipStateAction(Board board,int skipTurns, int cost) {
+    public SkipStateAction(BoardInterface board,int skipTurns, int cost) {
         this.skipTurns = skipTurns;
         this.board = board;
         this.cost = cost;
@@ -26,7 +28,7 @@ public class SkipStateAction implements GameAction {
     
     
     @Override
-    public void execute() {
+    public void execute() throws RemoteException {
         board.getCurrentPlayer().setState(new SkipState(skipTurns));
         board.queueImmediateAction(new CostAction(board, cost));
     }

@@ -30,13 +30,16 @@ import java.util.stream.IntStream;
 import javax.swing.JOptionPane;
 import hu.elte.gazdapp.controller.action.GameAction;
 import hu.elte.gazdapp.controller.action.InsuranceCheckAction;
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Set;
 
 /**
  *
  * @author mmeta
  */
-public class Board {
+public class Board extends UnicastRemoteObject implements BoardInterface, Serializable{
 
     private List<Player> players;
     private Player currentPlayer;
@@ -50,52 +53,62 @@ public class Board {
     private final FieldFactory fieldFactory = new FieldFactory();
     private final CardFactory cardFactory = new CardFactory();
 
-    public Board() {
+    public Board() throws RemoteException {
         players = new ArrayList<>();
         fields = fieldFactory.createFields();
         cards = cardFactory.createCards();
         actionQueue = new ArrayDeque<>();
     }
 
-    public void addPlayer(Player player) {
+    @Override
+    public void addPlayer(Player player) throws RemoteException {
         players.add(player);
     }
 
-    public List<Player> getPlayers() {
+    @Override
+    public List<Player> getPlayers() throws RemoteException {
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    @Override
+    public void setPlayers(List<Player> players) throws RemoteException {
         this.players = players;
     }
 
-    public Player getCurrentPlayer() {
+    @Override
+    public Player getCurrentPlayer() throws RemoteException {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
+    @Override
+    public void setCurrentPlayer(Player currentPlayer) throws RemoteException {
         this.currentPlayer = currentPlayer;
     }
 
-    public void start() {
+    @Override
+    public void start() throws RemoteException {
         currentPlayer = players.get(0);
     }
 
-    public boolean queueLateAction(GameAction action) {
+    @Override
+    public boolean queueLateAction(GameAction action) throws RemoteException {
         return actionQueue.offerLast(action);
     }
 
-    public boolean queueImmediateAction(GameAction action) {
+    @Override
+    public boolean queueImmediateAction(GameAction action) throws RemoteException {
         return actionQueue.offerFirst(action);
     }
 
-    public void doTurn() {
-        while (!actionQueue.isEmpty()) {
+    @Override
+    public void doTurn() throws RemoteException {
+        while (!actionQueue.isEmpty()){
             actionQueue.poll().execute();
         }
     }
 
-    public void step() {
+    @Override
+    public void step() throws RemoteException {
         Random rand = new Random();
         int dice = rand.nextInt(6) + 1;
         int newPosition = (currentPlayer.getPosition() + dice) % BOARDSIZE;
@@ -105,7 +118,8 @@ public class Board {
         }
     }
 
-    public void stepOn(int newPosition) {
+    @Override
+    public void stepOn(int newPosition) throws RemoteException {
         final int START = 0;
         if (currentPlayer.getPosition() > newPosition && newPosition != START) {
             queueImmediateAction(new CostAction(this, -2000));
@@ -114,7 +128,8 @@ public class Board {
         queueImmediateAction(fields[newPosition].getAction());
     }
 
-    public void nextPlayer() {
+    @Override
+    public void nextPlayer() throws RemoteException {
         currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
 
         if (!currentPlayer.canStep() && currentPlayer.getState() instanceof SkipState) {
@@ -123,17 +138,20 @@ public class Board {
         }
     }
 
-    public void drawCard() {
+    @Override
+    public void drawCard() throws RemoteException {
         queueImmediateAction(cards.get(0).getAction());
         queueLateAction(new ShowMessageGameAction(currentPlayer.getPosition() + " mező: " + cards.get(0).getMessage()));
         Collections.rotate(cards, 1);
     }
 
-    public Field[] getFields() {
+    @Override
+    public Field[] getFields() throws RemoteException {
         return fields;
     }
 
-    public void checkGame() {
+    @Override
+    public void checkGame() throws RemoteException {
         Set<Property> properties = currentPlayer.getProperties();
         if (properties.size() == (properties.contains(Property.INSURANCE) ? Property.values().length :Property.values().length-1) &&
                 currentPlayer.getDebt() == 0) {
@@ -142,15 +160,12 @@ public class Board {
         }
     }
 
-    public int getCurrentPlayersPosition() {
+    @Override
+    public int getCurrentPlayersPosition() throws RemoteException {
         return currentPlayer.getPosition();
     }
 
-    public Set<Property> getPropertiesOfField(int currentPlayersPosition) {
-        return fields[currentPlayersPosition].getProperties();
-    }
-
-    private final class CardFactory {
+    private final class CardFactory implements Serializable {
 
         private List<Card> cards = new LinkedList<>();
 
@@ -197,7 +212,7 @@ public class Board {
         }
     }
 
-    private final class FieldFactory {
+    private final class FieldFactory implements Serializable {
         
         private GameAction[] fields = new GameAction[BOARDSIZE];
         

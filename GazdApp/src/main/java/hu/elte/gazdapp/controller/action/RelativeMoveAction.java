@@ -6,7 +6,9 @@
 package hu.elte.gazdapp.controller.action;
 
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
 import hu.elte.gazdapp.frontend.GuiManager;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -14,16 +16,16 @@ import hu.elte.gazdapp.frontend.GuiManager;
  */
 public class RelativeMoveAction implements GameAction {
 
-    private final Board board;
+    private final BoardInterface board;
     private final int relativePosition;
 
-    public RelativeMoveAction(Board board, GuiManager gui, int relativePosition) {
+    public RelativeMoveAction(BoardInterface board, GuiManager gui, int relativePosition) {
         this.board = board;
         this.relativePosition = relativePosition;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws RemoteException {
         board.stepOn(board.getCurrentPlayer().getPosition()+relativePosition);
     }
 

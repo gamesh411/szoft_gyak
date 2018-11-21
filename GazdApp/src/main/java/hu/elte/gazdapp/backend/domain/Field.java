@@ -9,12 +9,13 @@ import hu.elte.gazdapp.backend.domain.component.Property;
 import java.util.HashSet;
 import java.util.Set;
 import hu.elte.gazdapp.controller.action.GameAction;
+import java.io.Serializable;
 
 /**
  *
  * @author MetaPC
  */
-public class Field {
+public class Field implements Serializable {
     private Set<Property> properties = new HashSet<>();
     private GameAction action;
     private boolean interactive= false;

@@ -6,7 +6,9 @@
 package hu.elte.gazdapp.controller.action;
 
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
 import hu.elte.gazdapp.frontend.GuiManager;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -14,14 +16,14 @@ import hu.elte.gazdapp.frontend.GuiManager;
  */
 public class NextPlayerGameAction implements GameAction {
 
-    private Board board;
+    private BoardInterface board;
 
-    public NextPlayerGameAction(Board board, GuiManager gui) {
+    public NextPlayerGameAction(BoardInterface board, GuiManager gui) {
         this.board = board;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws RemoteException {
         board.nextPlayer();
     }
 

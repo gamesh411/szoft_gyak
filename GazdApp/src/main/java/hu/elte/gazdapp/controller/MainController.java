@@ -9,6 +9,7 @@ import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.backend.domain.Player;
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
 import hu.elte.gazdapp.controller.action.NextPlayerGameAction;
 import hu.elte.gazdapp.controller.action.StepAction;
 import hu.elte.gazdapp.controller.action.CostAction;
@@ -16,118 +17,211 @@ import hu.elte.gazdapp.controller.action.GameAction;
 import hu.elte.gazdapp.controller.action.MoveAction;
 import hu.elte.gazdapp.controller.action.ShowMessageGameAction;
 import hu.elte.gazdapp.frontend.GuiManager;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author MetaPC
  */
-public class MainController {
+public class MainController  {
 
-    private Board board;
+    private BoardInterface board;
     private GuiManager gui;
     public final static int REPAY_AMOUNT = 5000;
     public final static int LOAN = 20000;
     public static final int OWN_RESOURCE = 15000; 
+    Registry registry;
 
     public MainController(GuiManager gui) {
         this.gui = gui;
     }
 
     public void newGame() {
-        board = new Board();
+        try {
+            board = new Board();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void start() {
-        board.start();
-        gui.update();
+    public void startServer() {
+        try {
+            registry = LocateRegistry.createRegistry(12345);
+            Board remoteBoard = new Board();
+            registry.rebind("rmiServer", remoteBoard);
+            for(Player p : board.getPlayers()){
+               remoteBoard.addPlayer(p); 
+            }
+            board = remoteBoard;
+            board.start();
+            gui.update();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void startClient() {
+        try {
+            registry = LocateRegistry.getRegistry("localhost", 12345);
+            board = (BoardInterface) (registry.lookup("rmiServer"));
+            board.start();
+            gui.update();
+        } catch (Exception ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void onRoll() {
-        board.queueLateAction(new StepAction(board, gui));
-        board.doTurn();
-        gui.update();
+        try {
+            board.queueLateAction(new StepAction(board, gui));
+            board.doTurn();
+            gui.update();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<Player> getPlayers() {
-        return board.getPlayers();
+        try {
+            return board.getPlayers();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public Player getCurrentPlayer() {
-        return board.getCurrentPlayer();
+        try {
+            return board.getCurrentPlayer();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public void endRound() {
-        board.queueLateAction(new NextPlayerGameAction(board, gui));
-        board.doTurn();
-        gui.update();
+        try {
+            board.queueLateAction(new NextPlayerGameAction(board, gui));
+            board.doTurn();
+            gui.update();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void addPlayer(String playerName, Piece color) {
-        board.addPlayer(new Player(playerName, color));
+        try {
+            board.addPlayer(new Player(playerName, color));
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void buySelectedItem(Property selectedItem) {
-        GameAction purchase = new CostAction(board, selectedItem.getPrice());
-        board.queueImmediateAction(purchase);
-        board.doTurn();
-        board.getCurrentPlayer().addProperty(selectedItem);
-        gui.update();
+    public void buySelectedItem(Property selectedItem)  {
+        try {
+            GameAction purchase = new CostAction(board, selectedItem.getPrice());
+            board.queueImmediateAction(purchase);
+            board.doTurn();
+            board.getCurrentPlayer().addProperty(selectedItem);
+            gui.update();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Set<Property> getFieldItems() {
-        return board.getPropertiesOfField(board.getCurrentPlayersPosition());
+        try {
+            return board.getFields()[board.getCurrentPlayersPosition()].getProperties();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public void checkGame() {
-        board.checkGame();
+        try {
+            board.checkGame();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public boolean isAnyPurchasableItem() {
-        Set<Property> p = getFieldItems();
-        if(p.contains(Property.HOUSEHOLD) || p.contains(Property.KITCHEN) || p.contains(Property.LIVING)){
-            //Law of Demeter
-            return board.getCurrentPlayer().getProperties().contains(Property.HOUSE);
+        try {
+            Set<Property> p = board.getFields()[board.getCurrentPlayersPosition()].getProperties();
+            if(p.contains(Property.HOUSEHOLD) || p.contains(Property.KITCHEN) || p.contains(Property.LIVING)){
+                return board.getCurrentPlayer().getProperties().contains(Property.HOUSE);
+            }
+            return !p.isEmpty();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return !p.isEmpty();
+        return false;
     }
     
     public void hackMove(int n){
-        board.queueImmediateAction(new MoveAction(board, gui, n));
-        board.doTurn();
-        gui.update();
-    }
-
-    public boolean canLoan() {
-        int pos = board.getCurrentPlayersPosition();
-        Player p = board.getCurrentPlayer();
-        return (pos == 19 || pos == 39) && !p.getProperties().contains(Property.HOUSE) && p.getMoney() >= 15000;
-    }
-
-    public boolean canRepay() {
-        return board.getCurrentPlayer().getDebt() > 0 && board.getCurrentPlayer().getMoney() >= REPAY_AMOUNT;
-    }
-
-    public void takeLoan() {
-        GameAction purchase = new CostAction(board, OWN_RESOURCE);
-        board.queueImmediateAction(purchase);
-        board.doTurn();
-        board.getCurrentPlayer().addProperty(Property.HOUSE);
-        board.getCurrentPlayer().setDebt(LOAN);
-        gui.update();
-    }
-
-    public void repay(int sum) {
-        Player p = board.getCurrentPlayer();
-        GameAction purchase = new CostAction(board, sum);
-        board.queueImmediateAction(purchase);
-        p.setDebt(p.getDebt()-sum);
-        if(p.getDebt()==0){
-            board.queueLateAction(new ShowMessageGameAction("Hitel sikeresn visszafizetve!"));
+        try {
+            board.queueImmediateAction(new MoveAction(board, gui, n));
+            board.doTurn();
+            gui.update();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        board.doTurn();
-        gui.update();
-        board.checkGame();
+    }
+
+    public boolean canLoan(){
+        try {
+            int pos = board.getCurrentPlayersPosition();
+            Player p = board.getCurrentPlayer();
+            return (pos == 19 || pos == 39) && !p.getProperties().contains(Property.HOUSE) && p.getMoney() >= 15000;
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public boolean canRepay(){
+        try {
+            return board.getCurrentPlayer().getDebt() > 0 && board.getCurrentPlayer().getMoney() >= REPAY_AMOUNT;
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public void takeLoan(){
+        try {
+            GameAction purchase = new CostAction(board, OWN_RESOURCE);
+            board.queueImmediateAction(purchase);
+            board.doTurn();
+            board.getCurrentPlayer().addProperty(Property.HOUSE);
+            board.getCurrentPlayer().setDebt(LOAN);
+            gui.update();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void repay(int sum){
+        try {
+            Player p = board.getCurrentPlayer();
+            GameAction purchase = new CostAction(board, sum);
+            board.queueImmediateAction(purchase);
+            p.setDebt(p.getDebt()-sum);
+            if(p.getDebt()==0){
+                board.queueLateAction(new ShowMessageGameAction("Hitel sikeresn visszafizetve!"));
+            }
+            board.doTurn();
+            gui.update();
+            board.checkGame();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

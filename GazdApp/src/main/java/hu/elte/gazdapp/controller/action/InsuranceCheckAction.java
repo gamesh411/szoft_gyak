@@ -6,20 +6,22 @@
 package hu.elte.gazdapp.controller.action;
 
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
 import hu.elte.gazdapp.backend.domain.Player;
 import hu.elte.gazdapp.backend.domain.component.Property;
+import java.rmi.RemoteException;
 
 public class InsuranceCheckAction implements GameAction {
 
-    private Board board;
+    private BoardInterface board;
     private int cost;
 
-    public InsuranceCheckAction(Board board) {
+    public InsuranceCheckAction(BoardInterface board) {
         this.board = board;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws RemoteException {
         Player p = board.getCurrentPlayer();
         if(p.getProperties().contains(Property.INSURANCE)){
             p.spendMoney(-5000);

@@ -5,11 +5,13 @@
  */
 package hu.elte.gazdapp.backend.domain.component;
 
+import java.io.Serializable;
+
 /**
  *
  * @author mmeta
  */
-public enum Piece {
+public enum Piece implements Serializable {
     RED("piros"), GREEN("zöld"), BLUE("kék"), YELLOW("sárga"), PURPLE("lila");
 
     private String huColor;
