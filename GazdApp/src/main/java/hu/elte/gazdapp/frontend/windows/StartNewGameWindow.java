@@ -39,7 +39,7 @@ public class StartNewGameWindow extends JFrame {
 
     private void initNewGameScreen() {
         setLayout(new FlowLayout());
-        colorsComboBox = new JComboBox<>(gui.getColors());
+        colorsComboBox = new JComboBox(gui.getColors());
         playerNameTFLabel = new JLabel("Játékos neve: ");
         playerNameTextField = new JTextField("", 30);
         addPlayerButton = new JButton("Játékos hozzáadása");
