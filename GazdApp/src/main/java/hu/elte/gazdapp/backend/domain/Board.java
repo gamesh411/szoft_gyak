@@ -87,7 +87,7 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
 
     @Override
     public void start() throws RemoteException {
-        currentPlayer = players.get(0);
+        currentPlayer = players.isEmpty() ? null : players.get(0);
     }
 
     @Override

@@ -25,6 +25,7 @@ public class Menu extends JMenuBar {
     public Menu(GuiManager gui) {
         this.gui = gui;
         initMenu();
+        this.setVisible(true);
     }
 
     private void initMenu() {

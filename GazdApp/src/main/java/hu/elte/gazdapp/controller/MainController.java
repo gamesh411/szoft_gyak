@@ -22,11 +22,14 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,14 +45,9 @@ public class MainController  {
     public final static int LOAN = 20000;
     public static final int OWN_RESOURCE = 15000; 
     
-    private boolean isServer;
-    private boolean gameInProgress;
-    private Thread updateThread;
+    private Registry registry;
+    private Timer updateTimer;
     
-    Registry registry;
-    
-    MulticastSocket communicationSocket;
-    InetAddress group;
 
     public MainController(GuiManager gui) {
         this.gui = gui;
@@ -63,107 +61,35 @@ public class MainController  {
         }
     }
     
-    public boolean isServer() { return isServer; }
-    public boolean isGameInProgress() { return gameInProgress; }
-    public void shutDownGame() {
-    	
-    	gameInProgress = false;
-    	
-    	byte endBuf[] = "end".getBytes();
-    	DatagramPacket endPacket = new DatagramPacket(endBuf, endBuf.length);
+    public void startClient(Player player) {
     	try {
-            communicationSocket.send(endPacket);
-            updateThread.join(1000);
-	} catch (IOException | InterruptedException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-	}
-    }
-
-    public void startServer() {
-        try {
-            registry = LocateRegistry.createRegistry(12345);
-            Board remoteBoard = new Board();
-            registry.rebind("rmiServer", remoteBoard);
-            for(Player p : board.getPlayers()){
-               remoteBoard.addPlayer(p); 
-            }
-            board = remoteBoard;
+            registry = LocateRegistry.getRegistry(12345);
+            board = (BoardInterface) registry.lookup("rmiServer");
+            
+            board.addPlayer(player);
             board.start();
-            gui.update();
             
+            updateTimer = new Timer(true);
+            updateTimer.scheduleAtFixedRate(new TimerTask() {
+				
+				@Override
+				public void run() {
+					gui.update();
+				}
+				
+			}, 0, 200);
             
-            isServer = true;
-            startUpdateThread();
-            
-        } catch (IOException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void startClient() {
-        try {
-            registry = LocateRegistry.getRegistry("localhost", 12345);
-            board = (BoardInterface) (registry.lookup("rmiServer"));
-            
-            gameInProgress = true;
-            
-            board.start();
-            gui.update();
-            
-            isServer = false;
-            startUpdateThread();
-            
-        } catch (Exception ex) {
+        } catch (IOException | NotBoundException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
         
-    public void updateClients() {
-    	byte updateMsg[] = "update".getBytes();
-    	try {
-            DatagramPacket updatePacket = new DatagramPacket(updateMsg, updateMsg.length, group, 54321 );
-            communicationSocket.send(updatePacket);
-	} catch (IOException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-	}
-    }
-    
-    public void startUpdateThread(){
-        try {
-            communicationSocket = new MulticastSocket(54321);
-            group = InetAddress.getByName("234.234.234.234");
-            communicationSocket.joinGroup(group);
-        } catch (IOException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        updateThread = new Thread(() -> {
-                try {
-	            	byte[] buf = new byte[256];
-	            	while (gameInProgress) {
-	                    DatagramPacket packet = new DatagramPacket(buf, buf.length, group, 54321 );
-                            communicationSocket.receive(packet);	
-	                    String received = new String(
-	                      packet.getData(), 0, packet.getLength());
-	                    if ("update".equals(received)) {
-	                        gui.update();
-	                    } else {
-	                    	break;
-	                    }
-	                }
-                } catch (IOException ex) {
-                	Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-				}
-            });
-            updateThread.start();
-    }
 
     public void onRoll() {
         try {
             board.queueLateAction(new StepAction(board, gui));
             board.doTurn();
             gui.update();
-            updateClients();
         } catch (RemoteException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -192,7 +118,6 @@ public class MainController  {
             board.queueLateAction(new NextPlayerGameAction(board, gui));
             board.doTurn();
             gui.update();
-            updateClients();
         } catch (RemoteException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -213,7 +138,6 @@ public class MainController  {
             board.doTurn();
             board.getCurrentPlayer().addProperty(selectedItem);
             gui.update();
-            updateClients();
         } catch (RemoteException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -254,7 +178,6 @@ public class MainController  {
             board.queueImmediateAction(new MoveAction(board, gui, n));
             board.doTurn();
             gui.update();
-            updateClients();
         } catch (RemoteException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -288,7 +211,6 @@ public class MainController  {
             board.getCurrentPlayer().addProperty(Property.HOUSE);
             board.getCurrentPlayer().setDebt(LOAN);
             gui.update();
-            updateClients();
         } catch (RemoteException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -305,9 +227,7 @@ public class MainController  {
             }
             board.doTurn();
             gui.update();
-            updateClients();
             board.checkGame();
-            updateClients();
         } catch (RemoteException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }

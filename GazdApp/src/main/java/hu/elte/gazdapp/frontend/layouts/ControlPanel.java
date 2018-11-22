@@ -67,7 +67,7 @@ public class ControlPanel extends JPanel {
         diceRollerButton = new JButton("Dobás");
         diceRollerButton.addActionListener(this::doRoll);
         buttonPanel.add(diceRollerButton);
-        diceRollerButton.setEnabled(false);
+        //diceRollerButton.setEnabled(false);
         endRoundButton = new JButton("Kör vége");
         endRoundButton.addActionListener(this::endRound);
         endRoundButton.setEnabled(false);

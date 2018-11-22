@@ -54,7 +54,7 @@ public class GuiManager {
 
     public void newGame() {
         control = new MainController(this);
-        control.newGame();
+        //control.newGame();
         initGameScreen = new StartNewGameWindow(this);
         initGameScreen.pack();
         initGameScreen.setVisible(true);
@@ -89,13 +89,8 @@ public class GuiManager {
         control.addPlayer(playerName, color);
     }
 
-     public void startServer() {
-        control.startServer();
-        screen.repaint();
-    }
-    
-    public void startClient() {
-        control.startClient();
+    public void startClient(Player player) {
+        control.startClient(player);
         screen.repaint();
     }
 
