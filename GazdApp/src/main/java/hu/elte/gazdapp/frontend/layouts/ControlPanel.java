@@ -144,18 +144,43 @@ public class ControlPanel extends JPanel {
         Player p = gui.getCurrentPlayer();
         
         System.out.println(p!= null ? p.getMoney(): "");
-        if (p != null) {
-            propertyButton.setEnabled(true);
-            refreshButton.setEnabled(true);
-            diceRollerButton.setEnabled(!endRoundButton.isEnabled());
-            purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
-            loanButton.setEnabled(gui.canLoan());
-            repayButton.setEnabled(gui.canRepay());
-            playerMoney.setText("Pénz: " + p.getMoney() + " €");
-            playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
-            playerPosition.setText("Pozíció: " + p.getPosition());
+        System.out.println(p.getName() + ", " + gui.ourPlayerName());
+        if (gui.multiGame()) {
+            if (p.getName().equals(gui.ourPlayerName())) {
+                loadButttons(p);
+            }
+            else{
+                disableButtons(p);
+            }
+        }
+        else if (p != null) {
+            loadButttons(p);
         }
 
+    }
+
+    private void loadButttons(Player p) {
+        propertyButton.setEnabled(true);
+        refreshButton.setEnabled(true);
+        diceRollerButton.setEnabled(!endRoundButton.isEnabled());
+        purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
+        loanButton.setEnabled(gui.canLoan());
+        repayButton.setEnabled(gui.canRepay());
+        playerMoney.setText("Pénz: " + p.getMoney() + " €");
+        playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
+        playerPosition.setText("Pozíció: " + p.getPosition());
+    }
+
+    private void disableButtons(Player p) {
+        propertyButton.setEnabled(false);
+        refreshButton.setEnabled(false);
+        diceRollerButton.setEnabled(false);
+        purchaseButton.setEnabled(false);
+        loanButton.setEnabled(false);
+        repayButton.setEnabled(false);
+        playerMoney.setText("Pénz: " + p.getMoney() + " €");
+        playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
+        playerPosition.setText("Pozíció: " + p.getPosition());
     }
     
     class HackToMove extends JPanel implements KeyListener{
