@@ -31,6 +31,7 @@ public class GuiManager {
     private PurchaseWindow purchaseScreen;
     private PropertyWindow propertyScreen;
     private MainController control;
+    private String ourPlayerName;
 
     private final int TEXT_SIZE = ScreenConstants.FONT_SIZE.getValue();
 
@@ -85,13 +86,10 @@ public class GuiManager {
         return Piece.values();
     }
 
-    public void addPlayer(String playerName, Piece color) {
-        control.addPlayer(playerName, color);
-    }
-
     public void startClient(Player player) {
+        ourPlayerName = player.getName();
         control.startClient(player);
-        screen.repaint();
+        screen.update();
     }
 
     public void doPurchase() {
@@ -144,5 +142,9 @@ public class GuiManager {
 
     public void repay(int sum) {
         control.repay(sum);
+    }
+    
+    public String ourPlayerName() {
+        return ourPlayerName;
     }
 }
