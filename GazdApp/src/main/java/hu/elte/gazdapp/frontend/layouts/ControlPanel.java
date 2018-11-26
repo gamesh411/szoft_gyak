@@ -32,7 +32,6 @@ public class ControlPanel extends JPanel {
     private JButton propertyButton;
     private JButton loanButton;
     private JButton repayButton;
-    private JButton refreshButton;
 
     private GuiManager gui;
 
@@ -66,8 +65,8 @@ public class ControlPanel extends JPanel {
     private void initButtons(JPanel buttonPanel) {
         diceRollerButton = new JButton("Dobás");
         diceRollerButton.addActionListener(this::doRoll);
+        diceRollerButton.setEnabled(false);
         buttonPanel.add(diceRollerButton);
-        //diceRollerButton.setEnabled(false);
         endRoundButton = new JButton("Kör vége");
         endRoundButton.addActionListener(this::endRound);
         endRoundButton.setEnabled(false);
@@ -88,10 +87,6 @@ public class ControlPanel extends JPanel {
         repayButton.addActionListener(this::repay);
         repayButton.setEnabled(false);
         buttonPanel.add(repayButton);
-        refreshButton = new JButton("Frissít");
-        refreshButton.addActionListener(this::refresh);
-        refreshButton.setEnabled(false);
-        buttonPanel.add(refreshButton);
     }
 
     private void doRoll(ActionEvent event) {
@@ -154,7 +149,6 @@ public class ControlPanel extends JPanel {
     
      private void loadButttons(Player p) {
         propertyButton.setEnabled(true);
-        refreshButton.setEnabled(true);
         diceRollerButton.setEnabled(!endRoundButton.isEnabled());
         purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
         loanButton.setEnabled(gui.canLoan());
@@ -165,7 +159,6 @@ public class ControlPanel extends JPanel {
     }
      private void disableButtons(Player p) {
         propertyButton.setEnabled(false);
-        refreshButton.setEnabled(false);
         diceRollerButton.setEnabled(false);
         purchaseButton.setEnabled(false);
         loanButton.setEnabled(false);
