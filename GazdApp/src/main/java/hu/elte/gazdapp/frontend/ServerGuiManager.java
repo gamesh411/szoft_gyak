@@ -1,20 +1,9 @@
 package hu.elte.gazdapp.frontend;
 
-import hu.elte.gazdapp.frontend.windows.StartNewGameWindow;
-import hu.elte.gazdapp.backend.domain.component.Piece;
-import hu.elte.gazdapp.backend.domain.Player;
-import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.controller.MainController;
 import hu.elte.gazdapp.frontend.util.ScreenConstants;
-import hu.elte.gazdapp.frontend.windows.StartNewGameWindow;
-import hu.elte.gazdapp.frontend.windows.PurchaseWindow;
 import hu.elte.gazdapp.frontend.windows.ServerWindow;
-import hu.elte.gazdapp.frontend.windows.GameWindow;
-import hu.elte.gazdapp.frontend.windows.PropertyWindow;
 import java.awt.Font;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 import javax.swing.UIManager;
 
 public class ServerGuiManager {

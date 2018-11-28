@@ -19,9 +19,6 @@ import hu.elte.gazdapp.controller.action.ShowMessageGameAction;
 import hu.elte.gazdapp.frontend.GuiManager;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

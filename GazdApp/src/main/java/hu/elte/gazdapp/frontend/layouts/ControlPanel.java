@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import hu.elte.gazdapp.frontend.GuiManager;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
@@ -26,6 +28,7 @@ public class ControlPanel extends JPanel {
     private JLabel playerPiece;
     private JLabel playerMoney;
     private JLabel playerPosition;
+    private JLabel messageLabel;
     private JButton diceRollerButton;
     private JButton endRoundButton;
     private JButton purchaseButton;
@@ -44,9 +47,26 @@ public class ControlPanel extends JPanel {
     private void init() {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 70, 10));
-        setLayout(new FlowLayout());
+        JPanel messagePanel = new JPanel(new FlowLayout());
+        messagePanel.add(messageLabel);
+
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
         add(infoPanel);
+
+        constraints.gridx = 1;
+        constraints.gridy = 0;
         add(buttonPanel);
+
+        constraints.gridwidth = 2;
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        add(messagePanel);
+
         setPreferredSize(new Dimension(1100, 100));
         initLabels(infoPanel);
         initButtons(buttonPanel);
@@ -95,35 +115,35 @@ public class ControlPanel extends JPanel {
     }
 
     private void doRoll(ActionEvent event) {
-            gui.doRoll();
-            diceRollerButton.setEnabled(false);
-            endRoundButton.setEnabled(true);
+        gui.doRoll();
+        diceRollerButton.setEnabled(false);
+        endRoundButton.setEnabled(true);
     }
 
     private void endRound(ActionEvent event) {
-            gui.endRound();
-            diceRollerButton.setEnabled(true);
-            endRoundButton.setEnabled(false);
+        gui.endRound();
+        diceRollerButton.setEnabled(true);
+        endRoundButton.setEnabled(false);
     }
 
     private void doPurchase(ActionEvent event) {
         gui.doPurchase();
-        
+
     }
-    
+
     private void viewProperties(ActionEvent event) {
         gui.viewProperties();
-        
+
     }
-    
+
     private void takeLoan(ActionEvent event) {
         gui.takeLoan();
     }
-    
-    private void repay(ActionEvent event){
+
+    private void repay(ActionEvent event) {
         gui.repay(REPAY_AMOUNT);
     }
-    
+
     private void refresh(ActionEvent event) {
         gui.update();
     }
@@ -140,19 +160,18 @@ public class ControlPanel extends JPanel {
         return playerPosition;
     }
 
-    public void update()  {
+    public void update() {
         Player p = gui.getCurrentPlayer();
         if (p != null) {
             if (p.getName().equals(gui.ourPlayerName())) {
                 loadButttons(p);
-            }
-            else{
+            } else {
                 disableButtons(p);
             }
         }
     }
-    
-     private void loadButttons(Player p) {
+
+    private void loadButttons(Player p) {
         propertyButton.setEnabled(true);
         refreshButton.setEnabled(true);
         diceRollerButton.setEnabled(!endRoundButton.isEnabled());
@@ -163,7 +182,8 @@ public class ControlPanel extends JPanel {
         playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
         playerPosition.setText("Pozíció: " + p.getPosition());
     }
-     private void disableButtons(Player p) {
+
+    private void disableButtons(Player p) {
         propertyButton.setEnabled(false);
         refreshButton.setEnabled(false);
         diceRollerButton.setEnabled(false);
@@ -175,29 +195,39 @@ public class ControlPanel extends JPanel {
         playerPosition.setText("Pozíció: " + p.getPosition());
     }
     
-    class HackToMove extends JPanel implements KeyListener{
-        String n ="";
+    public void setMessage(String message){
+        messageLabel.setText(message);
+    }
+
+    class HackToMove extends JPanel implements KeyListener {
+
+        String n = "";
+
         public void keyTyped(KeyEvent e) {
-           
+
         }
+
         @Override
         public void keyPressed(KeyEvent e) {
-            if(n.length()>2) n ="";
-            try {   
-                Integer.parseInt(""+e.getKeyChar());
-                n+= e.getKeyChar();
-                if(n.length()==2){
-                    gui.hackMove(Integer.parseInt(n.replaceFirst("^0+(?!$)", "")));               
-                    n="";
+            if (n.length() > 2) {
+                n = "";
+            }
+            try {
+                Integer.parseInt("" + e.getKeyChar());
+                n += e.getKeyChar();
+                if (n.length() == 2) {
+                    gui.hackMove(Integer.parseInt(n.replaceFirst("^0+(?!$)", "")));
+                    n = "";
                 }
-                
+
             } catch (Exception ex) {
             }
 
         }
+
         @Override
         public void keyReleased(KeyEvent e) {
-           
+
         }
     }
 }
