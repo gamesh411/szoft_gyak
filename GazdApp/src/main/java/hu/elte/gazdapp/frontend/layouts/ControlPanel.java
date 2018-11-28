@@ -48,6 +48,7 @@ public class ControlPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 70, 10));
         JPanel messagePanel = new JPanel(new FlowLayout());
+        messageLabel = new JLabel("Üzenet: ");
         messagePanel.add(messageLabel);
 
         setLayout(new GridBagLayout());
@@ -56,16 +57,16 @@ public class ControlPanel extends JPanel {
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        add(infoPanel);
+        add(infoPanel, constraints);
 
         constraints.gridx = 1;
         constraints.gridy = 0;
-        add(buttonPanel);
+        add(buttonPanel, constraints);
 
         constraints.gridwidth = 2;
         constraints.gridx = 0;
         constraints.gridy = 1;
-        add(messagePanel);
+        add(messagePanel, constraints);
 
         setPreferredSize(new Dimension(1100, 100));
         initLabels(infoPanel);
