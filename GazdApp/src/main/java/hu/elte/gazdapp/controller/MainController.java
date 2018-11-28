@@ -138,6 +138,14 @@ public class MainController  {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+     public void addPlayer(Player p) {
+        try {
+            board.addPlayer(p);
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public void buySelectedItem(Property selectedItem)  {
         try {
