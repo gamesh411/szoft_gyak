@@ -10,6 +10,9 @@ import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.backend.state.State;
 import hu.elte.gazdapp.backend.state.BasicState;
 import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +20,7 @@ import java.util.Set;
  *
  * @author mmeta
  */
-public class Player implements Serializable {
+public class Player extends UnicastRemoteObject implements PlayerInterface{
 
     private int money;
     private int position;
@@ -27,20 +30,20 @@ public class Player implements Serializable {
     private Set<Property> properties; 
     private int debt;
 
-    public Set<Property> getProperties() {
+    public Set<Property> getProperties() throws RemoteException {
         return properties;
     }
 
-    public void setProperty(Set<Property> properties) {
+    public void setProperty(Set<Property> properties) throws RemoteException {
         this.properties = properties;
     }
     
-    public void addProperty(Property property) {
+    public void addProperty(Property property)throws RemoteException {
         properties.add(property);
     }
     
 
-    public Player(String name, Piece piece) {
+    public Player(String name, Piece piece) throws RemoteException {
         this.name = name;
         this.piece = piece;
         money = 50000;
@@ -49,67 +52,67 @@ public class Player implements Serializable {
         debt = 0;
     }
 
-    public void spendMoney(int cost) {
+    public void spendMoney(int cost) throws RemoteException {
         money -= cost;
     }
 
-    public Piece getPiece() {
+    public Piece getPiece() throws RemoteException {
         return piece;
     }
 
-    public void setPiece(Piece piece) {
+    public void setPiece(Piece piece) throws RemoteException {
         this.piece = piece;
     }
 
-    public int getMoney() {
+    public int getMoney()  throws RemoteException{
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(int money) throws RemoteException {
         this.money = money;
     }
 
-    public int getPosition() {
+    public int getPosition() throws RemoteException {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(int position) throws RemoteException {
         this.position = position;
     }
 
-    public String getName() {
+    public String getName() throws RemoteException {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)  throws RemoteException{
         this.name = name;
     }
 
-    public State getState() {
+    public State getState()  throws RemoteException{
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(State state)  throws RemoteException{
         this.state = state;
     }
 
-    public boolean canStep() {
+    public boolean canStep()  throws RemoteException{
         return this.state.canStep(this, money);
     }
     
-    public boolean canStepWithRolledValue(int dice){
+    public boolean canStepWithRolledValue(int dice) throws RemoteException{
         return this.state.canStep(this, dice);
     }
 
-    public void decSkip() {
+    public void decSkip()  throws RemoteException{
         this.state.turn();
     }
     
-    public int getDebt(){
+    public int getDebt() throws RemoteException{
         return debt;
     }
 
-    public void setDebt(int debt) {
+    public void setDebt(int debt) throws RemoteException {
         this.debt = debt;
     }
 }

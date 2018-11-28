@@ -5,6 +5,8 @@
  */
 package hu.elte.gazdapp.controller.action;
 
+import hu.elte.gazdapp.backend.domain.BoardInterface;
+import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,14 +16,16 @@ import javax.swing.JOptionPane;
 public class ShowMessageGameAction implements GameAction {
 
     private String message;
+    private BoardInterface board;
 
-    public ShowMessageGameAction(String message) {
+    public ShowMessageGameAction(String message, BoardInterface board) {
         this.message = message;
+        this.board = board;
     }
 
     @Override
-    public void execute() {
-        JOptionPane.showMessageDialog(null, message);
+    public void execute() throws RemoteException {
+        board.setMessage(board.getCurrentPlayer().getName() + ": "+ message);
     }
 
 }

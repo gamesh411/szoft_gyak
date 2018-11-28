@@ -7,6 +7,7 @@ package hu.elte.gazdapp.frontend;
 
 import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.backend.domain.Player;
+import hu.elte.gazdapp.backend.domain.PlayerInterface;
 import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.controller.MainController;
 import hu.elte.gazdapp.frontend.util.GameClientType;
@@ -16,9 +17,12 @@ import hu.elte.gazdapp.frontend.windows.PurchaseWindow;
 import hu.elte.gazdapp.frontend.windows.GameWindow;
 import hu.elte.gazdapp.frontend.windows.PropertyWindow;
 import java.awt.Font;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 /**
@@ -57,7 +61,7 @@ public class GuiManager {
 
     public void newGame() {
         control = new MainController(this);
-        control.newGame();
+        //control.newGame();
         initGameScreen = new StartNewGameWindow(this);
         initGameScreen.pack();
         initGameScreen.setVisible(true);
@@ -68,16 +72,17 @@ public class GuiManager {
         screen.repaint();
     }
 
-    public List<Player> getPlayers() {
+    public List<PlayerInterface> getPlayers() {
         return control == null ? new LinkedList<>() : control.getPlayers();
     }
 
-    public Player getCurrentPlayer() {
+    public PlayerInterface getCurrentPlayer() {
         return control == null ? null : control.getCurrentPlayer();
     }
 
     public void update() {
         screen.update();
+        setInGameMessage(control.getMessage());
     }
 
     public void endRound() {
@@ -88,6 +93,17 @@ public class GuiManager {
         return Piece.values();
     }
 
+
+    public void startClient(Player player) {
+        try {
+            ourPlayerName = player.getName();
+        } catch (RemoteException ex) {
+            Logger.getLogger(GuiManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        control.startClient(player);
+        screen.update();
+    }
+
     public void addPlayer(String playerName, Piece color) {
         control.addPlayer(playerName, color);
         ourPlayerName = playerName;
@@ -96,12 +112,6 @@ public class GuiManager {
     public void startServer() {
         gameClientType = GameClientType.SERVER;
         control.startServer();
-        screen.update();
-    }
-
-    public void startClient() {
-        gameClientType = GameClientType.CLIENT;
-        control.startClient();
         screen.update();
     }
 
@@ -122,7 +132,12 @@ public class GuiManager {
     }
 
     public Set<Property> getCurrentPlayersItems() {
-        return getCurrentPlayer().getProperties();
+        try {
+            return getCurrentPlayer().getProperties();
+        } catch (RemoteException ex) {
+            Logger.getLogger(GuiManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public void buySelectedItem(Property selectedItem) {
@@ -157,11 +172,16 @@ public class GuiManager {
         control.repay(sum);
     }
 
+    public String ourPlayerName() {
+        return ourPlayerName;
+    }
+    
+    public void setInGameMessage(String message){
+        screen.setInGameMessage(message);
+    }
+
     public boolean multiGame() {
         return gameClientType.equals(GameClientType.CLIENT) || gameClientType.equals(GameClientType.SERVER);
     }
 
-    public String ourPlayerName() {
-        return ourPlayerName;
-    }
 }

@@ -7,6 +7,7 @@ package hu.elte.gazdapp.frontend.layouts;
 
 import hu.elte.gazdapp.frontend.util.DrawHelper;
 import hu.elte.gazdapp.backend.domain.Player;
+import hu.elte.gazdapp.backend.domain.PlayerInterface;
 import hu.elte.gazdapp.frontend.GuiManager;
 import hu.elte.gazdapp.frontend.util.ScreenConstants;
 import java.awt.Dimension;
@@ -14,6 +15,9 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -59,9 +63,13 @@ public class BoardPanel extends JLayeredPane {
         gui.getPlayers().forEach(p -> drawPlayer(grphcs, p));
     }
 
-    private void drawPlayer(Graphics g, Player player) {
-        Point p = DrawHelper.getPoint(PANEL_WIDTH, PANEL_HEIGHT, player.getPosition(), player.getPiece().ordinal());
-        Image img = new ImageIcon("img/" + player.getPiece().name() + ".jpg").getImage();
-        g.drawImage(img, (int) p.getX(), (int) p.getY(), PANEL_WIDTH / 40, PANEL_WIDTH / 40, this);
+    private void drawPlayer(Graphics g, PlayerInterface player) {
+        try {
+            Point p = DrawHelper.getPoint(PANEL_WIDTH, PANEL_HEIGHT, player.getPosition(), player.getPiece().ordinal());
+            Image img = new ImageIcon("img/" + player.getPiece().name() + ".jpg").getImage();
+            g.drawImage(img, (int) p.getX(), (int) p.getY(), PANEL_WIDTH / 40, PANEL_WIDTH / 40, this);
+        } catch (RemoteException ex) {
+            Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
