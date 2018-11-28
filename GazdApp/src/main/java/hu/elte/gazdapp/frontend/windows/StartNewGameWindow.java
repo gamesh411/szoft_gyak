@@ -11,9 +11,9 @@ import hu.elte.gazdapp.frontend.GuiManager;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -64,7 +64,11 @@ public class StartNewGameWindow extends JFrame {
             JOptionPane.showMessageDialog(this, "Nincs több bábu");
         } else {
             Piece selected = (Piece) colorsComboBox.getSelectedItem();
-            playerCreated = new Player(playerNameTextField.getText(), selected);
+            try {
+                playerCreated = new Player(playerNameTextField.getText(), selected);
+            } catch (RemoteException ex) {
+                Logger.getLogger(StartNewGameWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
             dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
             gui.startClient(playerCreated);
         }

@@ -16,9 +16,12 @@ import hu.elte.gazdapp.frontend.windows.PurchaseWindow;
 import hu.elte.gazdapp.frontend.windows.GameWindow;
 import hu.elte.gazdapp.frontend.windows.PropertyWindow;
 import java.awt.Font;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 
 /**
@@ -89,7 +92,11 @@ public class GuiManager {
     }
 
     public void startClient(Player player) {
-        ourPlayerName = player.getName();
+        try {
+            ourPlayerName = player.getName();
+        } catch (RemoteException ex) {
+            Logger.getLogger(GuiManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
         control.startClient(player);
         screen.update();
     }
@@ -111,7 +118,12 @@ public class GuiManager {
     }
 
     public Set<Property> getCurrentPlayersItems() {
-        return getCurrentPlayer().getProperties();
+        try {
+            return getCurrentPlayer().getProperties();
+        } catch (RemoteException ex) {
+            Logger.getLogger(GuiManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public void buySelectedItem(Property selectedItem) {

@@ -16,6 +16,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -160,34 +163,46 @@ public class ControlPanel extends JPanel {
     public void update() {
         PlayerInterface p = gui.getCurrentPlayer();
         if (p != null) {
-            if (p.getName().equals(gui.ourPlayerName())) {
-                loadButttons(p);
-            } else {
-                disableButtons(p);
+            try {
+                if (p.getName().equals(gui.ourPlayerName())) {
+                    loadButttons(p);
+                } else {
+                    disableButtons(p);
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControlPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
     private void loadButttons(PlayerInterface p) {
-        propertyButton.setEnabled(true);
-        diceRollerButton.setEnabled(!endRoundButton.isEnabled());
-        purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
-        loanButton.setEnabled(gui.canLoan());
-        repayButton.setEnabled(gui.canRepay());
-        playerMoney.setText("Pénz: " + p.getMoney() + " €");
-        playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
-        playerPosition.setText("Pozíció: " + p.getPosition());
+        try {
+            propertyButton.setEnabled(true);
+            diceRollerButton.setEnabled(!endRoundButton.isEnabled());
+            purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
+            loanButton.setEnabled(gui.canLoan());
+            repayButton.setEnabled(gui.canRepay());
+            playerMoney.setText("Pénz: " + p.getMoney() + " €");
+            playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
+            playerPosition.setText("Pozíció: " + p.getPosition());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControlPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void disableButtons(PlayerInterface p) {
-        propertyButton.setEnabled(false);
-        diceRollerButton.setEnabled(false);
-        purchaseButton.setEnabled(false);
-        loanButton.setEnabled(false);
-        repayButton.setEnabled(false);
-        playerMoney.setText("Pénz: " + p.getMoney() + " €");
-        playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
-        playerPosition.setText("Pozíció: " + p.getPosition());
+        try {
+            propertyButton.setEnabled(false);
+            diceRollerButton.setEnabled(false);
+            purchaseButton.setEnabled(false);
+            loanButton.setEnabled(false);
+            repayButton.setEnabled(false);
+            playerMoney.setText("Pénz: " + p.getMoney() + " €");
+            playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
+            playerPosition.setText("Pozíció: " + p.getPosition());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControlPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void setMessage(String message){
