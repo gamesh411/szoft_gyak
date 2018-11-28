@@ -147,4 +147,8 @@ public class GuiManager {
     public String ourPlayerName() {
         return ourPlayerName;
     }
+    
+    public void setInGameMessage(String message){
+        screen.setInGameMessage(message);
+    }
 }

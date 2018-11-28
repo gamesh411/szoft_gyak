@@ -43,4 +43,8 @@ public class GameWindow extends JFrame {
         main.update();
     }
 
+    public void setInGameMessage(String message) {
+        main.setInGameMessage(message);
+    }
+
 }
