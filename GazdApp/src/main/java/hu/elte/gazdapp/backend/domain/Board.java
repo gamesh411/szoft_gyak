@@ -6,6 +6,7 @@
 package hu.elte.gazdapp.backend.domain;
 
 import hu.elte.gazdapp.backend.domain.component.Card;
+import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.backend.state.SkipState;
 import hu.elte.gazdapp.controller.action.CostAction;
@@ -40,8 +41,8 @@ import java.util.Set;
  */
 public class Board extends UnicastRemoteObject implements BoardInterface, Serializable{
 
-    private List<Player> players;
-    private Player currentPlayer;
+    private List<PlayerInterface> players;
+    private PlayerInterface currentPlayer;
     private final Field[] fields;
 
     private final List<Card> cards;
@@ -69,24 +70,19 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
     public String getMessage() throws RemoteException {
         return message;
     }
-
+    
     @Override
-    public void addPlayer(Player player) throws RemoteException {
-        players.add(player);
+    public void addPlayer(String name, Piece piece) throws RemoteException {
+        players.add(new Player(name, piece));
     }
 
     @Override
-    public List<Player> getPlayers() throws RemoteException {
+    public List<PlayerInterface> getPlayers() throws RemoteException {
         return players;
     }
-
+    
     @Override
-    public void setPlayers(List<Player> players) throws RemoteException {
-        this.players = players;
-    }
-
-    @Override
-    public Player getCurrentPlayer() throws RemoteException {
+    public PlayerInterface getCurrentPlayer() throws RemoteException {
         return currentPlayer;
     }
 

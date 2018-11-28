@@ -7,6 +7,7 @@ package hu.elte.gazdapp.frontend;
 
 import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.backend.domain.Player;
+import hu.elte.gazdapp.backend.domain.PlayerInterface;
 import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.controller.MainController;
 import hu.elte.gazdapp.frontend.util.ScreenConstants;
@@ -66,11 +67,11 @@ public class GuiManager {
         screen.repaint();
     }
 
-    public List<Player> getPlayers() {
+    public List<PlayerInterface> getPlayers() {
         return control == null ? new LinkedList<>() : control.getPlayers();
     }
 
-    public Player getCurrentPlayer() {
+    public PlayerInterface getCurrentPlayer() {
         return control == null ? null : control.getCurrentPlayer();
     }
 

@@ -10,6 +10,7 @@ import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.backend.domain.Player;
 import hu.elte.gazdapp.backend.domain.Board;
 import hu.elte.gazdapp.backend.domain.BoardInterface;
+import hu.elte.gazdapp.backend.domain.PlayerInterface;
 import hu.elte.gazdapp.controller.action.NextPlayerGameAction;
 import hu.elte.gazdapp.controller.action.StepAction;
 import hu.elte.gazdapp.controller.action.CostAction;
@@ -62,8 +63,8 @@ public class MainController  {
     	try {
             registry = LocateRegistry.getRegistry(12345);
             board = (BoardInterface) registry.lookup("rmiServer");
-            
-            board.addPlayer(player);
+           
+            board.addPlayer(player.getName(), player.getPiece());
             board.start();
             
             updateTimer = new Timer(true);
@@ -92,7 +93,7 @@ public class MainController  {
         }
     }
 
-    public List<Player> getPlayers() {
+    public List<PlayerInterface> getPlayers() {
         try {
             return board.getPlayers();
         } catch (RemoteException ex) {
@@ -110,7 +111,7 @@ public class MainController  {
         return "";
     }
 
-    public Player getCurrentPlayer() {
+    public PlayerInterface getCurrentPlayer() {
         try {
             return board.getCurrentPlayer();
         } catch (RemoteException ex) {
@@ -132,7 +133,7 @@ public class MainController  {
 
     public void addPlayer(String playerName, Piece color) {
         try {
-            board.addPlayer(new Player(playerName, color));
+            board.addPlayer(playerName, color);
         } catch (RemoteException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -193,7 +194,7 @@ public class MainController  {
     public boolean canLoan(){
         try {
             int pos = board.getCurrentPlayersPosition();
-            Player p = board.getCurrentPlayer();
+            PlayerInterface p = board.getCurrentPlayer();
             return (pos == 19 || pos == 39) && !p.getProperties().contains(Property.HOUSE) && p.getMoney() >= 15000;
         } catch (RemoteException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -225,7 +226,7 @@ public class MainController  {
 
     public void repay(int sum){
         try {
-            Player p = board.getCurrentPlayer();
+            PlayerInterface p = board.getCurrentPlayer();
             GameAction purchase = new CostAction(board, sum);
             board.queueImmediateAction(purchase);
             p.setDebt(p.getDebt()-sum);

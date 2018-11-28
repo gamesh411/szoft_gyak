@@ -8,6 +8,7 @@ package hu.elte.gazdapp.controller.action;
 import hu.elte.gazdapp.backend.domain.Board;
 import hu.elte.gazdapp.backend.domain.BoardInterface;
 import hu.elte.gazdapp.backend.domain.Player;
+import hu.elte.gazdapp.backend.domain.PlayerInterface;
 import java.rmi.RemoteException;
 
 
@@ -23,7 +24,7 @@ public class InterestAction implements GameAction {
 
     @Override
     public void execute() throws RemoteException {
-        Player p = board.getCurrentPlayer();
+        PlayerInterface p = board.getCurrentPlayer();
         int money = p.getMoney();
         System.out.println(money);
         money = (int)(money *((100.0+interest)/100.0));

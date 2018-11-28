@@ -7,6 +7,7 @@ package hu.elte.gazdapp.frontend.layouts;
 
 import hu.elte.gazdapp.frontend.util.DrawHelper;
 import hu.elte.gazdapp.backend.domain.Player;
+import hu.elte.gazdapp.backend.domain.PlayerInterface;
 import hu.elte.gazdapp.frontend.GuiManager;
 import hu.elte.gazdapp.frontend.util.ScreenConstants;
 import java.awt.Dimension;
@@ -59,7 +60,7 @@ public class BoardPanel extends JLayeredPane {
         gui.getPlayers().forEach(p -> drawPlayer(grphcs, p));
     }
 
-    private void drawPlayer(Graphics g, Player player) {
+    private void drawPlayer(Graphics g, PlayerInterface player) {
         Point p = DrawHelper.getPoint(PANEL_WIDTH, PANEL_HEIGHT, player.getPosition(), player.getPiece().ordinal());
         Image img = new ImageIcon("img/" + player.getPiece().name() + ".jpg").getImage();
         g.drawImage(img, (int) p.getX(), (int) p.getY(), PANEL_WIDTH / 40, PANEL_WIDTH / 40, this);

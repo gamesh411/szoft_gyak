@@ -6,6 +6,7 @@
 package hu.elte.gazdapp.frontend.layouts;
 
 import hu.elte.gazdapp.backend.domain.Player;
+import hu.elte.gazdapp.backend.domain.PlayerInterface;
 import static hu.elte.gazdapp.controller.MainController.REPAY_AMOUNT;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -157,7 +158,7 @@ public class ControlPanel extends JPanel {
     }
 
     public void update() {
-        Player p = gui.getCurrentPlayer();
+        PlayerInterface p = gui.getCurrentPlayer();
         if (p != null) {
             if (p.getName().equals(gui.ourPlayerName())) {
                 loadButttons(p);
@@ -167,7 +168,7 @@ public class ControlPanel extends JPanel {
         }
     }
 
-    private void loadButttons(Player p) {
+    private void loadButttons(PlayerInterface p) {
         propertyButton.setEnabled(true);
         diceRollerButton.setEnabled(!endRoundButton.isEnabled());
         purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
@@ -178,7 +179,7 @@ public class ControlPanel extends JPanel {
         playerPosition.setText("Pozíció: " + p.getPosition());
     }
 
-    private void disableButtons(Player p) {
+    private void disableButtons(PlayerInterface p) {
         propertyButton.setEnabled(false);
         diceRollerButton.setEnabled(false);
         purchaseButton.setEnabled(false);
