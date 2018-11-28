@@ -81,13 +81,17 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
         return players;
     }
     
+    public void addPlayer(PlayerInterface player) throws RemoteException{
+        players.add(player);
+    }
+    
     @Override
     public PlayerInterface getCurrentPlayer() throws RemoteException {
         return currentPlayer;
     }
 
     @Override
-    public void setCurrentPlayer(Player currentPlayer) throws RemoteException {
+    public void setCurrentPlayer(PlayerInterface currentPlayer) throws RemoteException {
         this.currentPlayer = currentPlayer;
     }
 

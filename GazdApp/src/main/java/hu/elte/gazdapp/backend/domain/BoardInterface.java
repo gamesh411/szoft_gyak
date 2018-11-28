@@ -23,11 +23,13 @@ public interface BoardInterface extends Remote{
             
     public void addPlayer(String name, Piece piece) throws RemoteException;
     
+    public void addPlayer(PlayerInterface player) throws RemoteException;
+    
     public List<PlayerInterface> getPlayers() throws RemoteException;
 
     public PlayerInterface getCurrentPlayer() throws RemoteException;
 
-    public void setCurrentPlayer(Player currentPlayer) throws RemoteException;
+    public void setCurrentPlayer(PlayerInterface currentPlayer) throws RemoteException;
 
     public void start() throws RemoteException;
 
