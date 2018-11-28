@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
-import javax.swing.JOptionPane;
 import hu.elte.gazdapp.controller.action.GameAction;
 import hu.elte.gazdapp.controller.action.InsuranceCheckAction;
 import java.io.Serializable;
@@ -52,12 +51,23 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
 
     private final FieldFactory fieldFactory = new FieldFactory();
     private final CardFactory cardFactory = new CardFactory();
+    private String message;
 
     public Board() throws RemoteException {
         players = new ArrayList<>();
         fields = fieldFactory.createFields();
         cards = cardFactory.createCards();
         actionQueue = new ArrayDeque<>();
+        message = "";
+    }
+    
+    @Override
+    public void setMessage(String message) throws RemoteException {
+        this.message = message;
+    }
+    
+    public String getMessage() throws RemoteException {
+        return message;
     }
 
     @Override
@@ -141,7 +151,7 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
     @Override
     public void drawCard() throws RemoteException {
         queueImmediateAction(cards.get(0).getAction());
-        queueLateAction(new ShowMessageGameAction(currentPlayer.getPosition() + " mező: " + cards.get(0).getMessage()));
+        queueLateAction(new ShowMessageGameAction(currentPlayer.getPosition() + " mező: " + cards.get(0).getMessage(), this));
         Collections.rotate(cards, 1);
     }
 
@@ -155,7 +165,7 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
         Set<Property> properties = currentPlayer.getProperties();
         if (properties.size() == (properties.contains(Property.INSURANCE) ? Property.values().length :Property.values().length-1) &&
                 currentPlayer.getDebt() == 0) {
-            JOptionPane.showMessageDialog(null, "Győztes: " + currentPlayer.getName());
+            queueImmediateAction(new ShowMessageGameAction("Győztes: " + currentPlayer.getName(), this));
             queueImmediateAction(() -> System.exit(0));
         }
     }

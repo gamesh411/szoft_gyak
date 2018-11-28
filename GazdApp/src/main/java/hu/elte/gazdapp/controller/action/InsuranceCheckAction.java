@@ -26,7 +26,7 @@ public class InsuranceCheckAction implements GameAction {
         if(p.getProperties().contains(Property.INSURANCE)){
             p.spendMoney(-5000);
             p.getProperties().remove(Property.INSURANCE);
-            board.queueLateAction(new ShowMessageGameAction("A biztosító 5000 Eurót fizetett"));
+            board.queueLateAction(new ShowMessageGameAction("A biztosító 5000 Eurót fizetett", board));
         }
     }
 

@@ -47,7 +47,7 @@ public class ControlPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 70, 10));
         JPanel messagePanel = new JPanel(new FlowLayout());
-        messageLabel = new JLabel("Üzenet: ");
+        messageLabel = new JLabel("");
         messagePanel.add(messageLabel);
 
         setLayout(new GridBagLayout());

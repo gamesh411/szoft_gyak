@@ -76,6 +76,7 @@ public class GuiManager {
 
     public void update() {
         screen.update();
+        setInGameMessage(control.getMessage());
     }
 
     public void endRound() {

@@ -21,7 +21,7 @@ public class PropertyAddAction implements GameAction {
     public void execute() throws RemoteException{
         Player p = board.getCurrentPlayer();
         if((property == Property.HOUSEHOLD || property == Property.KITCHEN || property == Property.LIVING) && !p.getProperties().contains(Property.HOUSE) ){
-            board.queueLateAction(new ShowMessageGameAction("Nincs lakásod, így bútor árát kaptad meg"));
+            board.queueLateAction(new ShowMessageGameAction("Nincs lakásod, így bútor árát kaptad meg", board));
             p.spendMoney(-property.getPrice());
         }else{
            p.addProperty(property); 

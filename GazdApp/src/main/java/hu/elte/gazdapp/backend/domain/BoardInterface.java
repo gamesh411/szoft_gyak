@@ -16,6 +16,10 @@ import java.util.List;
  */
 public interface BoardInterface extends Remote{
     
+    public void setMessage(String message) throws RemoteException;
+    
+    public String getMessage() throws RemoteException;
+            
     public void addPlayer(Player player) throws RemoteException;
     
     public List<Player> getPlayers() throws RemoteException;

@@ -100,6 +100,15 @@ public class MainController  {
         }
         return null;
     }
+    
+    public String getMessage() {
+         try {
+            return board.getMessage();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
 
     public Player getCurrentPlayer() {
         try {
@@ -113,6 +122,7 @@ public class MainController  {
     public void endRound() {
         try {
             board.queueLateAction(new NextPlayerGameAction(board, gui));
+            board.setMessage("");
             board.doTurn();
             gui.update();
         } catch (RemoteException ex) {
@@ -220,7 +230,7 @@ public class MainController  {
             board.queueImmediateAction(purchase);
             p.setDebt(p.getDebt()-sum);
             if(p.getDebt()==0){
-                board.queueLateAction(new ShowMessageGameAction("Hitel sikeresn visszafizetve!"));
+                board.queueLateAction(new ShowMessageGameAction("Hitel sikeresn visszafizetve!", board));
             }
             board.doTurn();
             gui.update();
