@@ -10,6 +10,7 @@ import hu.elte.gazdapp.backend.domain.Player;
 import hu.elte.gazdapp.backend.domain.PlayerInterface;
 import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.controller.MainController;
+import hu.elte.gazdapp.frontend.util.GameClientType;
 import hu.elte.gazdapp.frontend.util.ScreenConstants;
 import hu.elte.gazdapp.frontend.windows.StartNewGameWindow;
 import hu.elte.gazdapp.frontend.windows.PurchaseWindow;
@@ -35,6 +36,7 @@ public class GuiManager {
     private PurchaseWindow purchaseScreen;
     private PropertyWindow propertyScreen;
     private MainController control;
+    private GameClientType gameClientType = GameClientType.SINGLE;
     private String ourPlayerName;
 
     private final int TEXT_SIZE = ScreenConstants.FONT_SIZE.getValue();
@@ -91,6 +93,7 @@ public class GuiManager {
         return Piece.values();
     }
 
+
     public void startClient(Player player) {
         try {
             ourPlayerName = player.getName();
@@ -101,13 +104,24 @@ public class GuiManager {
         screen.update();
     }
 
+    public void addPlayer(String playerName, Piece color) {
+        control.addPlayer(playerName, color);
+        ourPlayerName = playerName;
+    }
+
+    public void startServer() {
+        gameClientType = GameClientType.SERVER;
+        control.startServer();
+        screen.update();
+    }
+
     public void doPurchase() {
         purchaseScreen = new PurchaseWindow(this);
         purchaseScreen.pack();
         purchaseScreen.setVisible(true);
     }
-    
-     public void viewProperties() {
+
+    public void viewProperties() {
         propertyScreen = new PropertyWindow(this);
         propertyScreen.pack();
         propertyScreen.setVisible(true);
@@ -157,7 +171,7 @@ public class GuiManager {
     public void repay(int sum) {
         control.repay(sum);
     }
-    
+
     public String ourPlayerName() {
         return ourPlayerName;
     }
@@ -165,4 +179,9 @@ public class GuiManager {
     public void setInGameMessage(String message){
         screen.setInGameMessage(message);
     }
+
+    public boolean multiGame() {
+        return gameClientType.equals(GameClientType.CLIENT) || gameClientType.equals(GameClientType.SERVER);
+    }
+
 }
