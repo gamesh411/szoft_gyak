@@ -9,6 +9,7 @@ import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.backend.state.State;
 import hu.elte.gazdapp.backend.state.BasicState;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ import java.util.Set;
  *
  * @author mmeta
  */
-public class Player {
+public class Player implements Serializable {
 
     private int money;
     private int position;

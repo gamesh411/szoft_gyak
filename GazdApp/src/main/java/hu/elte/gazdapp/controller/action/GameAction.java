@@ -5,11 +5,14 @@
  */
 package hu.elte.gazdapp.controller.action;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author endrefulop
  */
-public interface GameAction {
+public interface GameAction extends Serializable {
 
-    void execute();
+    void execute() throws RemoteException;
 }

@@ -9,6 +9,7 @@ import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.backend.domain.Player;
 import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.controller.MainController;
+import hu.elte.gazdapp.frontend.util.GameClientType;
 import hu.elte.gazdapp.frontend.util.ScreenConstants;
 import hu.elte.gazdapp.frontend.windows.StartNewGameWindow;
 import hu.elte.gazdapp.frontend.windows.PurchaseWindow;
@@ -31,6 +32,8 @@ public class GuiManager {
     private PurchaseWindow purchaseScreen;
     private PropertyWindow propertyScreen;
     private MainController control;
+    private GameClientType gameClientType = GameClientType.SINGLE;
+    private String ourPlayerName;
 
     private final int TEXT_SIZE = ScreenConstants.FONT_SIZE.getValue();
 
@@ -87,11 +90,19 @@ public class GuiManager {
 
     public void addPlayer(String playerName, Piece color) {
         control.addPlayer(playerName, color);
+        ourPlayerName = playerName;
     }
 
-    public void startGame() {
-        control.start();
-        screen.repaint();
+    public void startServer() {
+        gameClientType = GameClientType.SERVER;
+        control.startServer();
+        screen.update();
+    }
+
+    public void startClient() {
+        gameClientType = GameClientType.CLIENT;
+        control.startClient();
+        screen.update();
     }
 
     public void doPurchase() {
@@ -99,8 +110,8 @@ public class GuiManager {
         purchaseScreen.pack();
         purchaseScreen.setVisible(true);
     }
-    
-     public void viewProperties() {
+
+    public void viewProperties() {
         propertyScreen = new PropertyWindow(this);
         propertyScreen.pack();
         propertyScreen.setVisible(true);
@@ -144,5 +155,13 @@ public class GuiManager {
 
     public void repay(int sum) {
         control.repay(sum);
+    }
+
+    public boolean multiGame() {
+        return gameClientType.equals(GameClientType.CLIENT) || gameClientType.equals(GameClientType.SERVER);
+    }
+
+    public String ourPlayerName() {
+        return ourPlayerName;
     }
 }

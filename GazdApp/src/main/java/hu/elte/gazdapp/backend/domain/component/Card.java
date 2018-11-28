@@ -6,12 +6,13 @@
 package hu.elte.gazdapp.backend.domain.component;
 
 import hu.elte.gazdapp.controller.action.GameAction;
+import java.io.Serializable;
 
 /**
  *
  * @author MetaPC
  */
-public class Card {
+public class Card implements Serializable {
     
     private GameAction action;
     private String message;

@@ -32,6 +32,7 @@ public class ControlPanel extends JPanel {
     private JButton propertyButton;
     private JButton loanButton;
     private JButton repayButton;
+    private JButton refreshButton;
 
     private GuiManager gui;
 
@@ -87,18 +88,22 @@ public class ControlPanel extends JPanel {
         repayButton.addActionListener(this::repay);
         repayButton.setEnabled(false);
         buttonPanel.add(repayButton);
+        refreshButton = new JButton("Frissít");
+        refreshButton.addActionListener(this::refresh);
+        refreshButton.setEnabled(false);
+        buttonPanel.add(refreshButton);
     }
 
     private void doRoll(ActionEvent event) {
-        gui.doRoll();
-        diceRollerButton.setEnabled(false);
-        endRoundButton.setEnabled(true);
+            gui.doRoll();
+            diceRollerButton.setEnabled(false);
+            endRoundButton.setEnabled(true);
     }
 
     private void endRound(ActionEvent event) {
-        gui.endRound();
-        diceRollerButton.setEnabled(true);
-        endRoundButton.setEnabled(false);
+            gui.endRound();
+            diceRollerButton.setEnabled(true);
+            endRoundButton.setEnabled(false);
     }
 
     private void doPurchase(ActionEvent event) {
@@ -115,8 +120,12 @@ public class ControlPanel extends JPanel {
         gui.takeLoan();
     }
     
-    private void repay(ActionEvent event) {
+    private void repay(ActionEvent event){
         gui.repay(REPAY_AMOUNT);
+    }
+    
+    private void refresh(ActionEvent event) {
+        gui.update();
     }
 
     public JLabel getCurrentPlayerPieceLabel() {
@@ -131,19 +140,47 @@ public class ControlPanel extends JPanel {
         return playerPosition;
     }
 
-    public void update() {
+    public void update()  {
         Player p = gui.getCurrentPlayer();
-        if (p != null) {
-            propertyButton.setEnabled(true);
-            diceRollerButton.setEnabled(!endRoundButton.isEnabled());
-            purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
-            loanButton.setEnabled(gui.canLoan());
-            repayButton.setEnabled(gui.canRepay());
-            playerMoney.setText("Pénz: " + p.getMoney() + " €");
-            playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
-            playerPosition.setText("Pozíció: " + p.getPosition());
+        
+        System.out.println(p!= null ? p.getMoney(): "");
+        System.out.println(p.getName() + ", " + gui.ourPlayerName());
+        if (gui.multiGame()) {
+            if (p.getName().equals(gui.ourPlayerName())) {
+                loadButttons(p);
+            }
+            else{
+                disableButtons(p);
+            }
+        }
+        else if (p != null) {
+            loadButttons(p);
         }
 
+    }
+
+    private void loadButttons(Player p) {
+        propertyButton.setEnabled(true);
+        refreshButton.setEnabled(true);
+        diceRollerButton.setEnabled(!endRoundButton.isEnabled());
+        purchaseButton.setEnabled(gui.isAnyPurchasAbleItem());
+        loanButton.setEnabled(gui.canLoan());
+        repayButton.setEnabled(gui.canRepay());
+        playerMoney.setText("Pénz: " + p.getMoney() + " €");
+        playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
+        playerPosition.setText("Pozíció: " + p.getPosition());
+    }
+
+    private void disableButtons(Player p) {
+        propertyButton.setEnabled(false);
+        refreshButton.setEnabled(false);
+        diceRollerButton.setEnabled(false);
+        purchaseButton.setEnabled(false);
+        loanButton.setEnabled(false);
+        repayButton.setEnabled(false);
+        playerMoney.setText("Pénz: " + p.getMoney() + " €");
+        playerPiece.setText("Játékos: " + p.getName() + " \tSzín: " + p.getPiece());
+        playerPosition.setText("Pozíció: " + p.getPosition());
     }
     
     class HackToMove extends JPanel implements KeyListener{

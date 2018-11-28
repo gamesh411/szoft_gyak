@@ -6,12 +6,13 @@
 package hu.elte.gazdapp.backend.state;
 
 import hu.elte.gazdapp.backend.domain.Player;
+import java.io.Serializable;
 
 /**
  *
  * @author MetaPC
  */
-public interface State {
+public interface State extends Serializable {
     
     void turn();
     boolean canStep(Player player,int diceNumber);

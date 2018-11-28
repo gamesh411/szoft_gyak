@@ -5,11 +5,13 @@
  */
 package hu.elte.gazdapp.backend.domain.component;
 
+import java.io.Serializable;
+
 /**
  *
  * @author MetaPC
  */
-public enum Property {
+public enum Property implements Serializable {
     HOUSE(30000, "Ház"),CAR(1000, "Kisautó"),KITCHEN(3000, "Konyhabútor"),LIVING(6000, "Szobabútor"),HOUSEHOLD(800, "Háztartási gépek"),INSURANCE(350, "Biztosítás");
     
     private int price;

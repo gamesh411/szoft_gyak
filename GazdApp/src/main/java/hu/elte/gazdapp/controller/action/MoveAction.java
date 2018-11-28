@@ -6,7 +6,9 @@
 package hu.elte.gazdapp.controller.action;
 
 import hu.elte.gazdapp.backend.domain.Board;
+import hu.elte.gazdapp.backend.domain.BoardInterface;
 import hu.elte.gazdapp.frontend.GuiManager;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -14,16 +16,16 @@ import hu.elte.gazdapp.frontend.GuiManager;
  */
 public class MoveAction implements GameAction {
 
-    private Board board;
+    private BoardInterface board;
     private int newPosition;
 
-    public MoveAction(Board board, GuiManager gui, int newPosition) {
+    public MoveAction(BoardInterface board, GuiManager gui, int newPosition) {
         this.board = board;
         this.newPosition = newPosition;
     }
 
     @Override
-    public void execute() {
+    public void execute() throws RemoteException {
         board.stepOn(newPosition);
     }
 
