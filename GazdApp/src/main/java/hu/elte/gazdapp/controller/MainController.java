@@ -61,7 +61,7 @@ public class MainController  {
     
     public void startClient(Player player) {
     	try {
-            registry = LocateRegistry.getRegistry(12345);
+            registry = LocateRegistry.getRegistry("25.16.83.237", 1099);  //this is the server hamachi ip address
             board = (BoardInterface) registry.lookup("rmiServer");
            
             board.addPlayer(player.getName(), player.getPiece());

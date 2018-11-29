@@ -191,7 +191,8 @@ public class ServerWindow {
 			getMainButton().setText("Stop");
 			
 			try {
-				registry = LocateRegistry.createRegistry(12345);
+                            System.setProperty("java.rmi.server.hostname", "25.16.83.237");  // this is the hamachi ip server address
+                            registry = LocateRegistry.createRegistry(1099);
 				remoteBoard = new Board();
 				remoteBoard.start();
 	            registry.rebind("rmiServer", remoteBoard);
