@@ -5,6 +5,7 @@
  */
 package hu.elte.gazdapp.backend.domain;
 
+import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.controller.action.GameAction;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -16,15 +17,19 @@ import java.util.List;
  */
 public interface BoardInterface extends Remote{
     
-    public void addPlayer(Player player) throws RemoteException;
+    public void setMessage(String message) throws RemoteException;
     
-    public List<Player> getPlayers() throws RemoteException;
+    public String getMessage() throws RemoteException;
+            
+    public void addPlayer(String name, Piece piece) throws RemoteException;
+    
+    public void addPlayer(PlayerInterface player) throws RemoteException;
+    
+    public List<PlayerInterface> getPlayers() throws RemoteException;
 
-    public void setPlayers(List<Player> players) throws RemoteException;
+    public PlayerInterface getCurrentPlayer() throws RemoteException;
 
-    public Player getCurrentPlayer() throws RemoteException;
-
-    public void setCurrentPlayer(Player currentPlayer) throws RemoteException;
+    public void setCurrentPlayer(PlayerInterface currentPlayer) throws RemoteException;
 
     public void start() throws RemoteException;
 

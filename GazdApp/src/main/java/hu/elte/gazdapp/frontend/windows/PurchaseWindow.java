@@ -15,7 +15,10 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.rmi.RemoteException;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -90,7 +93,11 @@ public class PurchaseWindow extends JFrame {
         constraints.gridy = 1;
         add(ownedItemsTable, constraints);
         
-        money = new JLabel("Aktuális egyenleg: " + gui.getCurrentPlayer().getMoney());
+        try {
+            money = new JLabel("Aktuális egyenleg: " + gui.getCurrentPlayer().getMoney());
+        } catch (RemoteException ex) {
+            Logger.getLogger(PurchaseWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
         constraints.insets = new Insets(20, 10, 10, 10);
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 0;
@@ -174,7 +181,11 @@ public class PurchaseWindow extends JFrame {
             buySelectedItemButton.setEnabled(false);
         }
         
-        money.setText("Aktuális egyenleg: " + gui.getCurrentPlayer().getMoney());
+        try {
+            money.setText("Aktuális egyenleg: " + gui.getCurrentPlayer().getMoney());
+        } catch (RemoteException ex) {
+            Logger.getLogger(PurchaseWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void buySelectedItem(ActionEvent event) {

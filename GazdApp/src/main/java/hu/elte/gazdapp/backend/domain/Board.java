@@ -6,6 +6,7 @@
 package hu.elte.gazdapp.backend.domain;
 
 import hu.elte.gazdapp.backend.domain.component.Card;
+import hu.elte.gazdapp.backend.domain.component.Piece;
 import hu.elte.gazdapp.backend.domain.component.Property;
 import hu.elte.gazdapp.backend.state.SkipState;
 import hu.elte.gazdapp.controller.action.CostAction;
@@ -27,7 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
-import javax.swing.JOptionPane;
 import hu.elte.gazdapp.controller.action.GameAction;
 import hu.elte.gazdapp.controller.action.InsuranceCheckAction;
 import java.io.Serializable;
@@ -41,8 +41,8 @@ import java.util.Set;
  */
 public class Board extends UnicastRemoteObject implements BoardInterface, Serializable{
 
-    private List<Player> players;
-    private Player currentPlayer;
+    private List<PlayerInterface> players;
+    private PlayerInterface currentPlayer;
     private final Field[] fields;
 
     private final List<Card> cards;
@@ -52,42 +52,52 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
 
     private final FieldFactory fieldFactory = new FieldFactory();
     private final CardFactory cardFactory = new CardFactory();
+    private String message;
 
     public Board() throws RemoteException {
         players = new ArrayList<>();
         fields = fieldFactory.createFields();
         cards = cardFactory.createCards();
         actionQueue = new ArrayDeque<>();
+        message = "";
+    }
+    
+    @Override
+    public void setMessage(String message) throws RemoteException {
+        this.message = message;
+    }
+    
+    public String getMessage() throws RemoteException {
+        return message;
+    }
+    
+    @Override
+    public void addPlayer(String name, Piece piece) throws RemoteException {
+        players.add(new Player(name, piece));
     }
 
     @Override
-    public void addPlayer(Player player) throws RemoteException {
-        players.add(player);
-    }
-
-    @Override
-    public List<Player> getPlayers() throws RemoteException {
+    public List<PlayerInterface> getPlayers() throws RemoteException {
         return players;
     }
-
-    @Override
-    public void setPlayers(List<Player> players) throws RemoteException {
-        this.players = players;
+    
+    public void addPlayer(PlayerInterface player) throws RemoteException{
+        players.add(player);
     }
-
+    
     @Override
-    public Player getCurrentPlayer() throws RemoteException {
+    public PlayerInterface getCurrentPlayer() throws RemoteException {
         return currentPlayer;
     }
 
     @Override
-    public void setCurrentPlayer(Player currentPlayer) throws RemoteException {
+    public void setCurrentPlayer(PlayerInterface currentPlayer) throws RemoteException {
         this.currentPlayer = currentPlayer;
     }
 
     @Override
     public void start() throws RemoteException {
-        currentPlayer = players.get(0);
+        currentPlayer = players.isEmpty() ? null : players.get(0);
     }
 
     @Override
@@ -141,7 +151,7 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
     @Override
     public void drawCard() throws RemoteException {
         queueImmediateAction(cards.get(0).getAction());
-        queueLateAction(new ShowMessageGameAction(currentPlayer.getPosition() + " mező: " + cards.get(0).getMessage()));
+        queueLateAction(new ShowMessageGameAction(currentPlayer.getPosition() + " mező: " + cards.get(0).getMessage(), this));
         Collections.rotate(cards, 1);
     }
 
@@ -155,7 +165,7 @@ public class Board extends UnicastRemoteObject implements BoardInterface, Serial
         Set<Property> properties = currentPlayer.getProperties();
         if (properties.size() == (properties.contains(Property.INSURANCE) ? Property.values().length :Property.values().length-1) &&
                 currentPlayer.getDebt() == 0) {
-            JOptionPane.showMessageDialog(null, "Győztes: " + currentPlayer.getName());
+            queueImmediateAction(new ShowMessageGameAction("Győztes: " + currentPlayer.getName(), this));
             queueImmediateAction(() -> System.exit(0));
         }
     }

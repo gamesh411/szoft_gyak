@@ -47,4 +47,8 @@ public class MainPanel extends JPanel {
     public void update() {
         controlPanel.update();
     }
+
+    public void setInGameMessage(String message) {
+        controlPanel.setMessage(message);
+    }
 }
